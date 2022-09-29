@@ -23,7 +23,9 @@ class MainController:
         self.file_chooser_model = FileChooserModel()
 
     def get_ins_out(self):
-        model = SplitModel(file_handler.get_columns_from_csv(self.file_chooser_model.filename))
+        model = SplitModel(
+            file_handler.get_columns_from_csv(self.file_chooser_model.filename)
+        )
         view = SplitView(self.view.window, model)
         controller = SplitController(model, view)
 
@@ -50,7 +52,7 @@ class MainController:
         if split_kwargs["ins"] is None or split_kwargs["out"] is None:
             return
 
-        self.model.set_dataframes(self.file_chooser_model.filename, **split_kwargs)
+        self.model.set_dataframe(self.file_chooser_model.filename, **split_kwargs)
         store = self.model.get_store(**split_kwargs)
         utils.view_trees(self.view._builder, store, **split_kwargs)
 
@@ -63,19 +65,10 @@ class MainController:
         self.view.destroy()
 
     def on_learn_clicked(self, button):
-        if not self.loaded:
+        if self.model.tdf is None:
             return
         learn_dialog = LearnDialog(self.view)
         kwargs = learn_dialog.get_learn_kwargs()
         result_dialog = ResultView(self, **kwargs)
         result_dialog.run()
         result_dialog.destroy()
-
-    def on_all_changed(self, button):
-        print("all changed")
-
-    def on_training_changed(self, button):
-        print("training changed")
-
-    def on_validation_changed(self, button):
-        print("validation changed")

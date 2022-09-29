@@ -11,41 +11,50 @@ from fastai.tabular.core import (
     FillMissing,
     cont_cat_split,
 )
+from models.dataset_tree_store import DatasetTreeStore
 
 
-def get_store(values, **kwargs):
-    tree_store = Gtk.ListStore(*([str] * len(values[0])))
+def get_store(tdf, **kwargs):
+    print(type(tdf))
+    print(tdf)
+    columns = [str] * len(tdf.items.iloc[0])
+    tree_store = DatasetTreeStore(*columns)
 
-    for row in values:
-        tree_store.append(row)
+    tree_store.append_training(tdf.train.decode().items.astype(str).to_numpy().tolist())
+    tree_store.append_validation(tdf.valid.decode().items.astype(str).to_numpy().tolist())
 
     return tree_store
 
 
 def get_values(df, **split_kwargs):
-    in_values = df[split_kwargs["ins"]].to_numpy()
+    print(type(df))
+    new_df = df.copy()
+    new_df.items.reindex(split_kwargs["ins"] + [split_kwargs["out"]])
+    # in_values = df[split_kwargs["ins"]].to_numpy()
+    """
     out_values = (
         kwargs["model"].predict(df[split_kwargs["ins"]])
         if "model" in split_kwargs
         else df[split_kwargs["out"]]
     )
-    out_values = out_values.to_numpy()
-    print(in_values)
-    values = np.concatenate((in_values, out_values[:, None]), axis=1).tolist()
-    return values
+    """
+    new_df[split_kwargs["out"]].map(
+        lambda val: kwargs["model"].predict(val) if "model" in split_kwargs else val
+    )
+    return new_df
 
 
 def get_tabular_pandas(filename, ins, out, pct=75, model=None, **kwargs):
     df = pd.read_csv(filename)
     df = sort_data(df, **kwargs) if model else df
-    df = df.astype(str)
     split = round(pct / 100 * len(df))
     splits = list(range(split)), list(range(split, len(df)))
     if len(df) == 0:
         return None, None
     procs = [Categorify, FillMissing]
     cont, cat = cont_cat_split(df, 1, dep_var=out)
-    return df, TabularPandas(df, procs, cat, cont, y_names=out, splits=splits)
+    tdf = TabularPandas(df, procs, cat, cont, y_names=out, splits=splits, inplace=True)
+    return tdf
 
 
 def sort_data(df, **kwargs):
@@ -66,6 +75,7 @@ def sort_data(df, **kwargs):
     else:
         df = df.sample(frac=1).reset_index(drop=True)
     return df
+
 
 def get_columns_from_csv(filename):
     with open(filename) as f:
