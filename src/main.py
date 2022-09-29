@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 
-from views.main_view import Main
+from views.main_view import MainView
+from models.main_model import MainModel
+from controllers.main_controller import MainController
 from gi.repository import Gtk
 
-window = Main()
+model = MainModel()
+view = MainView(model)
+controller = MainController(model, view)
+view.register_listener(controller)
 
 Gtk.main()
