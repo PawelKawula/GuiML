@@ -8,6 +8,7 @@ class MainModel:
     def __init__(self):
         self.items_store = None
         self.tdf = None, None
+        self.split_kwargs = None
 
     def set_dataframe(self, filename, **split_kwargs):
         self.tdf = file_handler.get_tabular_pandas(filename, **split_kwargs)

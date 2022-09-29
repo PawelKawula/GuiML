@@ -15,11 +15,13 @@ from .model import Model
 class DecisionTreeModel(Model):
     def __init__(self, tdf, **kwargs):
         self.tdf = tdf
-        self.model = DecisionTreeRegressor(min_samples_leaf=25)
+        self.model = DecisionTreeRegressor(**kwargs)
+        print(len(self.tdf.items.columns))
         self.model.fit(self.tdf.train.xs, self.tdf.train.y)
 
     def predict(self, xs):
-        return self.model.predict(xs)
+        print(set(self.tdf.items.columns).difference(set(xs.columns)))
+        return self.model.predict(xs.to_numpy())
 
 
 if __name__ == "__main__":

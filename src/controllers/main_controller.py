@@ -48,13 +48,18 @@ class MainController:
         if not self.file_chooser_model.filename:
             return
 
-        split_kwargs = self.get_ins_out()
-        if split_kwargs["ins"] is None or split_kwargs["out"] is None:
+        self.model.split_kwargs = self.get_ins_out()
+        if (
+            self.model.split_kwargs["ins"] is None
+            or self.model.split_kwargs["out"] is None
+        ):
             return
 
-        self.model.set_dataframe(self.file_chooser_model.filename, **split_kwargs)
-        store = self.model.get_store(**split_kwargs)
-        utils.view_trees(self.view._builder, store, **split_kwargs)
+        self.model.set_dataframe(
+            self.file_chooser_model.filename, **self.model.split_kwargs
+        )
+        store = self.model.get_store(**self.model.split_kwargs)
+        utils.view_trees(self.view._builder, store, **self.model.split_kwargs)
 
     def on_about_activate(self, button):
         about_dialog = AboutDialog(self.view.window)
@@ -67,8 +72,11 @@ class MainController:
     def on_learn_clicked(self, button):
         if self.model.tdf is None:
             return
-        learn_dialog = LearnDialog(self.view)
+        learn_dialog = LearnDialog(self.view, self.model)
         kwargs = learn_dialog.get_learn_kwargs()
-        result_dialog = ResultView(self, **kwargs)
+        learn_dialog.destroy()
+        if kwargs is None:
+            return
+        result_dialog = ResultView(self, self.model, **kwargs)
         result_dialog.run()
         result_dialog.destroy()

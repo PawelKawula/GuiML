@@ -8,15 +8,16 @@ from learning.decision_tree import DecisionTreeModel
 
 
 class ResultView:
-    def __init__(self, parent, model):
+    def __init__(self, parent, main_model, **kwargs):
         self.parent = parent
+        self.main_model = main_model
         self._builder = Gtk.Builder()
         self._builder.add_from_file(constants.RESULT_FILE)
         self._builder.connect_signals(self)
 
         self.dialog = self._builder.get_object("dialog")
         self.dialog.show()
-        self.model = DecisionTreeModel(self.parent.tdf)
+        self.model = DecisionTreeModel(self.main_model.tdf)
 
         self.populate()
 
@@ -24,19 +25,14 @@ class ResultView:
         self.dialog.destroy()
 
     def populate(self):
-        in_values, out_values = file_handler.get_values(
-            self.parent.tdf,
-            self.parent.ins,
-            self.parent.out,
-            self.parent.pct,
-            self.model,
+        split_kwargs = self.main_model.split_kwargs
+        tdf = file_handler.get_values(
+            self.main_model.tdf, valid=True, model=self.model, **split_kwargs
         )
-        input_store, output_store = file_handler.get_stores(
-            in_values, out_values, len(self.parent.ins)
-        )
-        utils.view_trees(
-            self._builder, input_store, output_store, self.parent.ins, self.parent.out
-        )
+        store = file_handler.get_store(tdf, valid=True, **split_kwargs)
+        print(len(store))
+        utils.view_trees(self._builder, store, **split_kwargs)
+        print("VIEW TREES")
 
     def run(self):
         self.dialog.run()

@@ -5,7 +5,7 @@ from views import constants
 
 
 class LearnDialog(Gtk.Dialog):
-    def __init__(self, parent):
+    def __init__(self, parent, main_model):
         super().__init__(parent)
         self.method_combo_box = Gtk.ComboBoxText()
         self.method_combo_box.set_entry_text_column(0)

@@ -14,33 +14,43 @@ from fastai.tabular.core import (
 from models.dataset_tree_store import DatasetTreeStore
 
 
-def get_store(tdf, **kwargs):
-    print(type(tdf))
-    print(tdf)
+def get_store(tdf, valid=False, **kwargs):
     columns = [str] * len(tdf.items.iloc[0])
-    tree_store = DatasetTreeStore(*columns)
+    tree_store = DatasetTreeStore(valid, *columns)
 
-    tree_store.append_training(tdf.train.decode().items.astype(str).to_numpy().tolist())
-    tree_store.append_validation(tdf.valid.decode().items.astype(str).to_numpy().tolist())
+    if not valid:
+        tree_store.append_training(
+            tdf.train.decode().items.astype(str).to_numpy().tolist()
+        )
+        tree_store.append_validation(
+            tdf.valid.decode().items.astype(str).to_numpy().tolist()
+        )
+    else:
+        tree_store.append_results(
+            tdf.decode().items.astype(str).to_numpy().tolist()
+        )
 
     return tree_store
 
 
-def get_values(df, **split_kwargs):
-    print(type(df))
-    new_df = df.copy()
+def get_values(df, valid=False, **split_kwargs):
+    new_df = df.valid.copy() if valid else df.copy()
+    print("COLS1:", len(new_df.items.columns))
     new_df.items.reindex(split_kwargs["ins"] + [split_kwargs["out"]])
-    # in_values = df[split_kwargs["ins"]].to_numpy()
-    """
-    out_values = (
-        kwargs["model"].predict(df[split_kwargs["ins"]])
-        if "model" in split_kwargs
-        else df[split_kwargs["out"]]
-    )
+    print("COLS2:", len(new_df.items.columns))
     """
     new_df[split_kwargs["out"]].map(
-        lambda val: kwargs["model"].predict(val) if "model" in split_kwargs else val
+        lambda val: split_kwargs["model"].predict(val) if "model" in split_kwargs else val
     )
+    """
+    print(f"NEW_DF_LEN: {len(new_df[split_kwargs['ins']])}")
+    print(f"len ins:{len(split_kwargs['ins'])}")
+    ins = list(new_df.items.columns)
+    ins.remove(split_kwargs["out"])
+    if "model" in split_kwargs:
+        new_df.items[split_kwargs["out"]] = split_kwargs["model"].predict(
+            new_df.items[ins]
+        )
     return new_df
 
 
@@ -53,7 +63,8 @@ def get_tabular_pandas(filename, ins, out, pct=75, model=None, **kwargs):
         return None, None
     procs = [Categorify, FillMissing]
     cont, cat = cont_cat_split(df, 1, dep_var=out)
-    tdf = TabularPandas(df, procs, cat, cont, y_names=out, splits=splits, inplace=True)
+    tdf = TabularPandas(df, procs, cat, cont, y_names=out, splits=splits)
+    print(f"len tab pand:{len(tdf.items.columns)}")
     return tdf
 
 
