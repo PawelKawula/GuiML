@@ -35,21 +35,9 @@ def get_store(tdf, valid=False, **kwargs):
 
 def get_values(df, valid=False, **split_kwargs):
     new_df = df.valid.copy() if valid else df.copy()
-    print("COLS1:", len(new_df.items.columns))
-    new_df.items.reindex(split_kwargs["ins"] + [split_kwargs["out"]])
-    print("COLS2:", len(new_df.items.columns))
-    """
-    new_df[split_kwargs["out"]].map(
-        lambda val: split_kwargs["model"].predict(val) if "model" in split_kwargs else val
-    )
-    """
-    print(f"NEW_DF_LEN: {len(new_df[split_kwargs['ins']])}")
-    print(f"len ins:{len(split_kwargs['ins'])}")
-    ins = list(new_df.items.columns)
-    ins.remove(split_kwargs["out"])
     if "model" in split_kwargs:
         new_df.items[split_kwargs["out"]] = split_kwargs["model"].predict(
-            new_df.items[ins]
+            new_df.train.xs
         )
     return new_df
 
@@ -64,12 +52,10 @@ def get_tabular_pandas(filename, ins, out, pct=75, model=None, **kwargs):
     procs = [Categorify, FillMissing]
     cont, cat = cont_cat_split(df, 1, dep_var=out)
     tdf = TabularPandas(df, procs, cat, cont, y_names=out, splits=splits)
-    print(f"len tab pand:{len(tdf.items.columns)}")
     return tdf
 
 
 def sort_data(df, **kwargs):
-    print("sort_data")
     if "validation_split_method" in kwargs:
         if kwargs["validation_split_method"] == "time-based":
             dt_col = df.select_dtypes(include=["datetime64"]).columns

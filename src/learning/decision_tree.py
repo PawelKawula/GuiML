@@ -15,25 +15,24 @@ from .model import Model
 class DecisionTreeModel(Model):
     def __init__(self, tdf, **kwargs):
         self.tdf = tdf
-        self.model = DecisionTreeRegressor(**kwargs)
-        print(len(self.tdf.items.columns))
+        self.model = DecisionTreeRegressor()
         self.model.fit(self.tdf.train.xs, self.tdf.train.y)
 
     def predict(self, xs):
-        print(set(self.tdf.items.columns).difference(set(xs.columns)))
-        return self.model.predict(xs.to_numpy())
+        return self.model.predict(xs)
 
 
 if __name__ == "__main__":
     df = pd.read_csv("train.csv")
-    cont, cat = cont_cat_split(df, 1, dep_var=out)
-    procs = [Categorify, FillMissing]
-    tdf = TabularPandas(df, procs, cat, cont, y_names=out, splits=splits)
-
+    dep_var = "SalePrice"
     ins = df.columns.tolist()
     ins.remove("SalePrice")
     splits = round(len(df) * 0.75)
     splits = list(range(splits)), list(range(splits, len(df)))
+    cont, cat = cont_cat_split(df, 1, dep_var=dep_var)
+    procs = [Categorify, FillMissing]
+    tdf = TabularPandas(df, procs, cat, cont, y_names=dep_var, splits=splits)
 
-    dlm = DecisionTreeModel(df, ins, "SalePrice", splits)
-    print(dlm.predict(dlm.tdf.loc[:10].drop("SalePrice", axis=1)))
+
+    dlm = DecisionTreeModel(tdf)
+    print(dlm.predict(tdf.valid.xs))

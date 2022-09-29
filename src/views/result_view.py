@@ -30,9 +30,7 @@ class ResultView:
             self.main_model.tdf, valid=True, model=self.model, **split_kwargs
         )
         store = file_handler.get_store(tdf, valid=True, **split_kwargs)
-        print(len(store))
         utils.view_trees(self._builder, store, **split_kwargs)
-        print("VIEW TREES")
 
     def run(self):
         self.dialog.run()
