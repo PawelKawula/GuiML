@@ -11,25 +11,19 @@ from fastai.tabular.core import (
 import torch.nn.functional as F
 import pandas as pd
 import numpy as np
-from .model import Model
+from .ml_model import MlModel
 
 
-class DeepLearningModel(Model):
-    def __init__(self, df, ins, out, splits):
-        int_cols = df.select_dtypes(int).columns
-        str_cols = df.select_dtypes(object).columns
-        df[int_cols] = df[int_cols].astype(float)
-        df[str_cols] = df[str_cols].astype("category")
-        for cat in str_cols:
-            df[cat] = df[cat].cat.codes
-        cont, cat = cont_cat_split(df, 1, dep_var=out)
-        df[cat] = df[cat].astype("category")
-        procs = [Categorify, FillMissing]
-        tdf = TabularPandas(df, procs, cat, cont, y_names=out, splits=splits)
+class DeepLearningModel(MlModel):
+    display_name = "Deep Learning"
+
+    def __init__(self, tdf):
+        train_len, tdf_len = len(tdf.train), len(tdf.items)
+        splits = list(range(train_len)), list(range(train_len, tdf_len))
+        # new_tdf.setup()
         dls = tdf.dataloaders(1024)
         self.learner = tabular_learner(
             dls,
-            y_range=(tdf[out].min(), tdf[out].max()),
             layers=[500, 250],
             n_out=1,
             loss_func=F.mse_loss,
@@ -37,14 +31,18 @@ class DeepLearningModel(Model):
         self.learner.fit(5, 1e-2)
 
     def predict(self, xs):
-        return [self.learner.predict(xs.iloc[i])[1].item() for i in range(len(xs))]
+        return self.learner.predict(xs)
 
+    @staticmethod
+    def setup_view(view):
+        return {}
 
 if __name__ == "__main__":
     df = pd.read_csv("train.csv")
-    ins = df.columns.tolist()
-    ins.remove("SalePrice")
     splits = round(len(df) * 0.75)
     splits = list(range(splits)), list(range(splits, len(df)))
-    dlm = DeepLearningModel(df, ins, "SalePrice", splits)
-    print(dlm.predict(df.loc[:10, ins]))
+    dep_var = "SalePrice"
+    procs = [Categorify, FillMissing, Normalize]
+    cont, cat = cont_cat_split(df, 1, dep_var=dep_var)
+    tdf = TabularPandas(df, procs, cat, cont, y_names=dep_var, splits=splits)
+    dlm = DeepLearningModel(tdf)

@@ -26,17 +26,15 @@ def get_store(tdf, valid=False, **kwargs):
             tdf.valid.decode().items.astype(str).to_numpy().tolist()
         )
     else:
-        tree_store.append_results(
-            tdf.decode().items.astype(str).to_numpy().tolist()
-        )
+        tree_store.append_results(tdf.decode().items.astype(str).to_numpy().tolist())
 
     return tree_store
 
 
 def get_values(df, valid=False, **split_kwargs):
     new_df = df.valid.copy() if valid else df.copy()
-    if "model" in split_kwargs:
-        new_df.items[split_kwargs["out"]] = split_kwargs["model"].predict(
+    if "ml_model" in split_kwargs:
+        new_df.items[split_kwargs["out"]] = split_kwargs["ml_model"].predict(
             new_df.train.xs
         )
     return new_df
