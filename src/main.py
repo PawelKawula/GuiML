@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 
 from views.main_view import MainView
 from models.main_model import MainModel

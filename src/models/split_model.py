@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from controllers.file_handler import get_columns_from_csv
 
 # Add default value for model and view

@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import xgboost as xgb
 from gi.repository import Gtk
 

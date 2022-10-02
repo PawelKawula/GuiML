@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from fastai.tabular.learner import tabular_learner
 from fastai.tabular.core import (
     TabularPandas,

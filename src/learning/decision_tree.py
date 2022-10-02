@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from fastai.tabular.core import (
     TabularPandas,
     Categorify,

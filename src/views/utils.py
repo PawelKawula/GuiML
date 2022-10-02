@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import csv
 from copy import deepcopy
 

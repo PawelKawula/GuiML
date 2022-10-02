@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 
 class ResultController:
     def __init__(self, model, view):

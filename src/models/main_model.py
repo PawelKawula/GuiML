@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from models.split_model import SplitModel
 from controllers import file_handler
 

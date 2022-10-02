@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from gi.repository import Gtk
 
 from learning.defined_models import learn_models

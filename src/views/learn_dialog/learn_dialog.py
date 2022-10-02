@@ -34,24 +34,6 @@ class LearnDialog(Gtk.Dialog):
         self.reset_view()
         self.show_all()
 
-    """
-    def update_view(self, learn_args):
-        for name, value in learn_args.items():
-            widget, widget_kwargs = value
-            box = Gtk.Box(spacing=6)
-            box.pack_start(Gtk.Label(name), True, True, 0)
-            box.pack_start(widget(**widget_kwargs), True, True, 0)
-            self.learn_widgets.append(box)
-            self.get_content_area().add(box)
-        self.show_all()
-    """
-
-    """
-    def reset_view(self):
-        for child in self.learn_widgets:
-            self.get_content_area().remove(child)
-    """
-
     def get_active_model(self):
         return learn_models[self.method_combo_box.get_active_text()]
 
@@ -59,6 +41,5 @@ class LearnDialog(Gtk.Dialog):
         return self.method_combo_box.get_active_text()
 
     def reset_view(self):
-        #self.learn_arguments_view.reset()
         self.learn_arguments_view.destroy()
         self.learn_arguments_view = LearnArgumentsView(self, self.get_active_model_text())

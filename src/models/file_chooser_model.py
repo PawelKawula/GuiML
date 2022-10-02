@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 
 from controllers import file_handler
 
