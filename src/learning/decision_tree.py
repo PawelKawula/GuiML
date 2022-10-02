@@ -14,6 +14,7 @@ from .ml_model import MlModel
 
 class DecisionTreeModel(MlModel):
     display_name = "Decision Tree"
+
     def __init__(self, tdf, **kwargs):
         self.tdf = tdf
         self.model = DecisionTreeRegressor(**kwargs)
@@ -23,8 +24,9 @@ class DecisionTreeModel(MlModel):
         return self.model.predict(xs)
 
     @staticmethod
-    def setup_view(view):
+    def setup_view():
         return {}
+
 
 if __name__ == "__main__":
     df = pd.read_csv("train.csv")

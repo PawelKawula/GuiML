@@ -4,7 +4,7 @@ from gi.repository import Gtk
 
 from views import utils
 from views.split_view import SplitView
-from views.learn_dialog import LearnDialog
+from views.learn_dialog.learn_dialog import LearnDialog
 from views.result_view import ResultView
 from views.about_view import AboutDialog
 from views.file_chooser_view import FileChooserView

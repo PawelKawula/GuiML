@@ -34,8 +34,9 @@ class DeepLearningModel(MlModel):
         return self.learner.predict(xs)
 
     @staticmethod
-    def setup_view(view):
+    def setup_view():
         return {}
+
 
 if __name__ == "__main__":
     df = pd.read_csv("train.csv")

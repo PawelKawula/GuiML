@@ -8,7 +8,7 @@ from learning.decision_tree import DecisionTreeModel
 
 
 class ResultView:
-    def __init__(self, parent, main_model, ml_model, **kwargs):
+    def __init__(self, parent, main_model, **kwargs):
         self.parent = parent
         self.main_model = main_model
         self._builder = Gtk.Builder()
@@ -17,7 +17,7 @@ class ResultView:
 
         self.dialog = self._builder.get_object("dialog")
         self.dialog.show()
-        self.ml_model = ml_model(self.main_model.tdf, **kwargs)
+        self.ml_model = kwargs["ml_model"](self.main_model.tdf, **kwargs)
 
         self.populate()
 
