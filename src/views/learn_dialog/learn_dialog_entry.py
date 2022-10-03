@@ -6,15 +6,10 @@ from gi.repository import Gtk
 
 
 class LearnDialogEntry(Gtk.Entry):
-    entry_types = [float, int]
-
-    def __init__(self, text, entry_type):
-        super().__init__()
+    def __init__(self, text, entry_type, halign=Gtk.Align.END, valign=Gtk.Align.CENTER):
+        super().__init__(halign=halign, valign=valign)
         self.set_text(text)
         self.entry_type = entry_type
-        assert (
-            type(entry_type) in LearnDialogEntry.entry_types
-        ), "Incorrect value type for widget!"
 
     def get(self):
         if self.entry_type is int:

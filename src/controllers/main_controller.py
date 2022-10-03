@@ -71,10 +71,10 @@ class MainController:
         if self.model.tdf is None:
             return
         learn_dialog = LearnDialog(self.view, self.model)
-        kwargs = learn_dialog.get_learn_kwargs()
+        ml_model, kwargs = learn_dialog.get_learn_kwargs()
         learn_dialog.destroy()
         if kwargs is None:
             return
-        result_dialog = ResultView(self, self.model, **kwargs)
+        result_dialog = ResultView(self, self.model, ml_model, **kwargs)
         result_dialog.run()
         result_dialog.destroy()

@@ -11,7 +11,6 @@ class LearnArgumentsItem(Gtk.Paned):
         self.name = label
         self.label = Gtk.Label(label=label, halign=Gtk.Align.START, valign=Gtk.Align.CENTER)
         self.add1(self.label)
-        print(widget_type, widget_kwargs)
         self.learn_widget = widget_type(**widget_kwargs, halign=Gtk.Align.END, valign=Gtk.Align.CENTER)
         self.add2(self.learn_widget)
 

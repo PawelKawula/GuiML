@@ -19,8 +19,6 @@ class FileChooserController:
         filename = None
         if response == Gtk.ResponseType.OK:
             filename = self.view.get_filename()
-            print("File selected: " + filename)
         elif response == Gtk.ResponseType.CANCEL:
-            print("Cancel clicked")
             self.view.destroy()
         return filename

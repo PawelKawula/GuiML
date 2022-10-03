@@ -7,18 +7,16 @@ class LearnArgumentsView():
     def __init__(self, view, ml_model_name=None):
         self.items = []
         self.view = view
-        if ml_model_name:
-            learn_arguments = learn_models[ml_model_name].setup_view()
-            self.ml_model_name = ml_model_name
-            for name, widget_info in learn_arguments.items():
-                widget_type, widget_kwargs = widget_info
-                item = LearnArgumentsItem(name, widget_type, widget_kwargs)
-                self.items.append(item)
-                self.view.get_content_area().add(item)
+        learn_arguments = learn_models[ml_model_name].setup_view()
+        self.ml_model_name = ml_model_name
+        for name, widget_info in learn_arguments.items():
+            widget_type, widget_kwargs = widget_info
+            item = LearnArgumentsItem(name, widget_type, widget_kwargs)
+            self.items.append(item)
+            self.view.get_content_area().add(item)
 
     def get_arguments(self):
         res = {arg.name: arg.get_value() for arg in self.items}
-        res["ml_model"] = learn_models[self.ml_model_name]
         return res
 
     def destroy(self):
