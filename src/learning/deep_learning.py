@@ -13,8 +13,6 @@ from .ml_model import MlModel
 
 
 class DeepLearningModel(MlModel):
-    display_name = "Deep Learning"
-
     def __init__(self, tdf):
         train_len, tdf_len = len(tdf.train), len(tdf.items)
         splits = list(range(train_len)), list(range(train_len, tdf_len))
@@ -32,7 +30,11 @@ class DeepLearningModel(MlModel):
         return self.learner.predict(xs)
 
     @staticmethod
-    def setup_view():
+    def setup_learn_view():
+        return {}
+
+    @staticmethod
+    def setup_general_options_view():
         return {}
 
 

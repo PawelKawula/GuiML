@@ -6,13 +6,14 @@ from gi.repository import Gtk
 
 
 class LearnDialogEntry(Gtk.Entry):
-    def __init__(self, text, entry_type, halign=Gtk.Align.END, valign=Gtk.Align.CENTER):
-        super().__init__(halign=halign, valign=valign)
-        self.set_text(text)
-        self.entry_type = entry_type
+    def __init__(self, data_type=None, values=None):
+        super().__init__(halign=Gtk.Align.END, valign=Gtk.Align.CENTER)
+        self.data_type = data_type
 
     def get(self):
-        if self.entry_type is int:
-            return int(self.get_text())
-        if self.entry_type is float:
-            return float(self.get_text())
+        text = self.get_text()
+        if self.data_type == "int":
+            return int(text)
+        if self.data_type == "float":
+            return float(text)
+        return text

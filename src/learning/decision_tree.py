@@ -13,18 +13,23 @@ from .ml_model import MlModel
 class DecisionTreeModel(MlModel):
     display_name = "Decision Tree"
 
-    def __init__(self, tdf, **kwargs):
+    def __init__(self, tdf, toml_dict):
         self.tdf = tdf
-        self.model = DecisionTreeRegressor(**kwargs)
-        self.model.fit(self.tdf.train.xs, self.tdf.train.y)
+        self.model = DecisionTreeRegressor(toml_dict["__init__"])
+        self.model.fit(self.tdf.train.xs, self.tdf.train.y, **toml_dict["fit"])
+        for method, kwargs in methods_dict.items():
+            getattr(self.model, method)(**kwargs)
 
     def predict(self, xs):
         return self.model.predict(xs)
 
     @staticmethod
-    def setup_view():
+    def setup_learn_view():
         return {}
 
+    @staticmethod
+    def setup_general_options_view():
+        return {}
 
 if __name__ == "__main__":
     df = pd.read_csv("train.csv")

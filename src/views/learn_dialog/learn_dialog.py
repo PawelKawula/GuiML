@@ -14,7 +14,9 @@ class LearnDialog(Gtk.Dialog):
             self.method_combo_box.append_text(l)
         self.method_combo_box.set_active(0)
         self.get_content_area().add(self.method_combo_box)
-        self.learn_arguments_view = LearnArgumentsView(self, self.get_active_model_text())
+        self.learn_arguments_view = LearnArgumentsView(
+            self, self.get_active_model_text()
+        )
 
         self.add_buttons(
             Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OK, Gtk.ResponseType.OK
@@ -43,4 +45,6 @@ class LearnDialog(Gtk.Dialog):
     def reset_view(self):
         if hasattr(self, "learn_arguments_view"):
             self.learn_arguments_view.destroy()
-            self.learn_arguments_view = LearnArgumentsView(self, self.get_active_model_text())
+            self.learn_arguments_view = LearnArgumentsView(
+                self, self.get_active_model_text()
+            )

@@ -1,4 +1,3 @@
-
 from gi.repository import Gtk
 from views import constants
 

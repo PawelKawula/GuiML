@@ -1,0 +1,20 @@
+[general]
+    [learning.train.max_depth]
+    widget_type = "entry"
+    data_type = "int"
+    [learning.train.eta]
+    widget_type = "combo"
+    data_type = "int"
+    values = [0, 1, 2]
+    [learning.train.objective]
+    widget_type = "combo"
+    data_type = "str"
+    values = [
+        "reg:squarederror", "reg:squaredlogerror", "reg:logistic", "reg:pseudohubererror",
+        "binary:logistic", "binary:logitraw", "binary:hinge",
+        "count:poisson",
+        "survival:cox", "survival:aft", "survival:aft",
+        "multi:softmax", "multi:softprob",
+        "rank:pairwise", "rank:ndcg", "rank:map",
+        "reg:gamma", "reg:tweedie",
+    ]
