@@ -16,3 +16,9 @@ class LearnDialogCombo(Gtk.ComboBoxText):
         if self.data_type == "int":
             return int(value)
         return value
+
+    def get_widget(self):
+        return self
+
+    def set_default(self, default):
+        self.set_active(default)

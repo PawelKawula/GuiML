@@ -15,7 +15,10 @@ class LearnArgumentsItem(Gtk.Paned):
         )
         self.add1(self.label)
         self.learn_widget = widget_type(data_type, values)
-        self.add2(self.learn_widget)
+        self.add2(self.learn_widget.get_widget())
 
     def get_value(self):
         return self.learn_widget.get()
+
+    def set_default(self, default):
+        self.learn_widget.set_default(default)

@@ -2,10 +2,12 @@
     [learning.train.max_depth]
     widget_type = "entry"
     data_type = "int"
+    default = 2
     [learning.train.eta]
     widget_type = "combo"
     data_type = "int"
     values = [0, 1, 2]
+    default = 1
     [learning.train.objective]
     widget_type = "combo"
     data_type = "str"
@@ -18,3 +20,8 @@
         "rank:pairwise", "rank:ndcg", "rank:map",
         "reg:gamma", "reg:tweedie",
     ]
+    default = 0
+    [learning.train.base_score]
+    widget_type = "scale"
+    data_type = "float"
+    default = 0.5

@@ -6,13 +6,16 @@ from views.learn_dialog.learn_dialog import LearnDialog
 from views.result_view import ResultView
 from views.about_view import AboutDialog
 from views.file_chooser_view import FileChooserView
+from views.settings_view import SettingsView
 
 from models.split_model import SplitModel
 from models.file_chooser_model import FileChooserModel
+from models.settings_model import SettingsModel
 
 from controllers.split_controller import SplitController
 from controllers.file_chooser_controller import FileChooserController
 from controllers import file_handler
+from controllers.settings_controller import SettingsController
 
 
 class MainController:
@@ -34,7 +37,15 @@ class MainController:
     def on_destroy(self, *args):
         Gtk.main_quit()
 
-    def on_quit_clicked(self, item):
+    def on_settings_activate(self, item):
+        model = SettingsModel()
+        view = SettingsView(model)
+        controller = SettingsController(model, view)
+        view.register_listener(controller)
+        controller.run()
+        controller.destroy()
+
+    def on_quit_activate(self, item):
         Gtk.main_quit()
 
     def on_file_activate(self, item):

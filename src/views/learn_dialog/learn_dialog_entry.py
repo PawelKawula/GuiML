@@ -1,7 +1,3 @@
-#!/usr/bin/env python
-
-from abc import abstractmethod
-
 from gi.repository import Gtk
 
 
@@ -17,3 +13,9 @@ class LearnDialogEntry(Gtk.Entry):
         if self.data_type == "float":
             return float(text)
         return text
+
+    def get_widget(self):
+        return self
+
+    def set_default(self, default):
+        self.set_text(str(default))

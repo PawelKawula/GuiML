@@ -31,6 +31,7 @@ class DecisionTreeModel(MlModel):
     def setup_general_options_view():
         return {}
 
+
 if __name__ == "__main__":
     df = pd.read_csv("train.csv")
     dep_var = "SalePrice"
