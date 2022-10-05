@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
-class SettingsModel():
+
+class SettingsModel:
     def __init__(self):
         pass

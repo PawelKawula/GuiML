@@ -1,5 +1,5 @@
 from gi.repository import Gtk
-from views import constants
+from views import constants, utils
 from .learn_arguments_view import LearnArgumentsView
 from learning.defined_models import learn_models
 
@@ -7,7 +7,7 @@ from learning.defined_models import learn_models
 class LearnDialog(Gtk.Dialog):
     def __init__(self, parent, main_model):
         super().__init__(parent)
-        self.method_combo_box = Gtk.ComboBoxText()
+        self.method_combo_box = Gtk.ComboBoxText(margin_left=20, margin_right=20, margin_top=10, margin_bottom=10)
         self.method_combo_box.connect("changed", self.on_method_combo_changed)
         self.method_combo_box.set_entry_text_column(0)
         for l in learn_models:
@@ -24,10 +24,13 @@ class LearnDialog(Gtk.Dialog):
         self.show_all()
 
     def get_learn_kwargs(self, **kwargs):
-        response = self.run()
-        if response == Gtk.ResponseType.CANCEL:
-            return None, None
-        learn_kwargs = self.learn_arguments_view.get_arguments()
+        while True:
+            response = self.run()
+            if response != Gtk.ResponseType.OK:
+                return None, None
+            learn_kwargs = self.learn_arguments_view.get_arguments()
+            if not utils.is_none_in_dict(learn_kwargs):
+                break
         ml_model = self.get_active_model()
         self.destroy()
         return ml_model, learn_kwargs

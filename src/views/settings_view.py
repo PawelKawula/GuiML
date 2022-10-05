@@ -2,7 +2,8 @@ from gi.repository import Gtk
 
 from views import constants
 
-class SettingsView():
+
+class SettingsView:
     def __init__(self, model):
         self.model = model
         self._builder = Gtk.Builder()

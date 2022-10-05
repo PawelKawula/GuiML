@@ -20,8 +20,42 @@
         "rank:pairwise", "rank:ndcg", "rank:map",
         "reg:gamma", "reg:tweedie",
     ]
-    default = 0
+    default = -1
     [learning.train.base_score]
     widget_type = "scale"
     data_type = "float"
     default = 0.5
+    [learning.train.eval_metric]
+    widget_type = "combo"
+    data_type = "str"
+    default = 0
+    values = [
+        "rmse", "rmsle",
+        "mae", "mape", "mphe",
+        "logloss",
+        "error", "error@t",
+        "merror", "mlogloss",
+        "auc", "aucpr",
+        "ndcg", "ndcg@n",
+        "map", "map@n",
+        "poisson-nloglik", "gamma-nloglik", "cox-nloglik", "tweedie-nloglik", "aft-nloglik",
+        "gamma-deviance", "interval-regression-accuracy",
+    ]
+    [learning.train.seed]
+    widget_type = "entry"
+    data_type = "int"
+    default = 0
+    [learning.train.seed_per_iteration]
+    widget_type = "switch"
+    data_type = "bool"
+    default = false
+    [learning.train.tweedie_variance_power]
+    widget_type = "scale"
+    data_type = "float"
+    values = [1, 2, 0.01]
+    enabled_on = { argument = "train.objective", value = "reg:tweedie" }
+    [learning.train.huber_slope]
+    widget_type = "entry"
+    data_type = "float"
+    default = 1.0
+    enabled_on = { argument = "train.objective", value = "reg:pseudohubererror" }

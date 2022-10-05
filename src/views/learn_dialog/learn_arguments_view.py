@@ -7,7 +7,7 @@ from learning.ml_model import MlModel
 
 class LearnArgumentsView:
     def __init__(self, view, ml_model_name=None):
-        self.items, self.expanders, self.vboxes = [], [], []
+        self.items, self.expanders, self.vboxes = {}, [], []
         self.method_args = {}
         self.view = view
         learn_arguments = learn_models[ml_model_name].parse_options("learning")
@@ -28,19 +28,25 @@ class LearnArgumentsView:
         values = widget_info.get("values", None)
         widget_type = MlModel.parse_widget_type(widget_type)
         item = LearnArgumentsItem(name, widget_type, data_type, values)
+        self.items[f"{method}.{item.name}"] = item
         if "default" in widget_info:
             item.set_default(widget_info["default"])
-        self.items.append(item)
+        if "enabled_on" in widget_info:
+            enabled_on = widget_info["enabled_on"]
+            dis_item = self.items[f"{method}.{name}"]
+            self.items[enabled_on["argument"]].add_enabled_on((dis_item, enabled_on["value"]))
         vbox.pack_start(item, True, True, 0)
         self.method_args[method][name] = item
 
     def get_arguments(self):
         return {
-            method: {name: item.get_value() for name, item in args.items()}
+            method: {name: item.get_value() for name, item in args.items() if item.get_sensitive()}
             for method, args in self.method_args.items()
         }
 
     def destroy(self):
-        for items in [self.items, self.vboxes, self.expanders]:
+        for items in [self.vboxes, self.expanders]:
             for item in items:
                 item.destroy()
+        for item in self.items.values():
+            item.destroy()

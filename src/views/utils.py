@@ -21,3 +21,10 @@ def view_trees(builder, items_store, ins, out, **split_kwargs):
     columns.append(f"{out} (Out)")
     for i, column in enumerate(columns):
         items_view.append_column(Gtk.TreeViewColumn(column, renderer, text=i))
+
+def is_none_in_dict(obj):
+    if obj is None: return True
+    if isinstance(obj, dict):
+        for v in obj.values():
+            if is_none_in_dict(v): return True
+    return False

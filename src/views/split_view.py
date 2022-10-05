@@ -1,5 +1,7 @@
 from gi.repository import Gtk
 
+from .constants import MARGINS
+
 # Add default value for model and view
 class SplitView(Gtk.Dialog):
     def __init__(self, parent, model):
@@ -7,7 +9,7 @@ class SplitView(Gtk.Dialog):
         self.model = model
         area = self.get_content_area()
 
-        self.output_choose_combo = Gtk.ComboBoxText()
+        self.output_choose_combo = Gtk.ComboBoxText(**MARGINS)
         self.output_choose_combo.set_entry_text_column(0)
         area.add(self.output_choose_combo)
 
