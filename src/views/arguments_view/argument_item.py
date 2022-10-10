@@ -2,12 +2,12 @@
 
 from gi.repository import Gtk
 
-from .learn_dialog_entry import LearnDialogEntry
-from .learn_dialog_combo import LearnDialogCombo
+from .argument_entry import ArgumentEntry
+from .argument_combo import ArgumentCombo
 from views.constants import MARGINS
 
 
-class LearnArgumentsItem(Gtk.Box):
+class ArgumentItem(Gtk.Box):
     def __init__(self, label, widget_type, data_type, values):
         super().__init__(**MARGINS)
         self.name = label

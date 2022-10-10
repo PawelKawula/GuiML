@@ -1,20 +1,22 @@
 from gi.repository import Gtk
 from views import constants, utils
-from .learn_arguments_view import LearnArgumentsView
+from .arguments_view.arguments_view import ArgumentsView
 from learning.defined_models import learn_models
 
 
 class LearnDialog(Gtk.Dialog):
     def __init__(self, parent, main_model):
         super().__init__(parent)
-        self.method_combo_box = Gtk.ComboBoxText(margin_left=20, margin_right=20, margin_top=10, margin_bottom=10)
+        self.method_combo_box = Gtk.ComboBoxText(
+            margin_left=20, margin_right=20, margin_top=10, margin_bottom=10
+        )
         self.method_combo_box.connect("changed", self.on_method_combo_changed)
         self.method_combo_box.set_entry_text_column(0)
         for l in learn_models:
             self.method_combo_box.append_text(l)
         self.method_combo_box.set_active(0)
         self.get_content_area().add(self.method_combo_box)
-        self.learn_arguments_view = LearnArgumentsView(
+        self.learn_arguments_view = ArgumentsView(
             self, self.get_active_model_text()
         )
 
@@ -48,6 +50,6 @@ class LearnDialog(Gtk.Dialog):
     def reset_view(self):
         if hasattr(self, "learn_arguments_view"):
             self.learn_arguments_view.destroy()
-            self.learn_arguments_view = LearnArgumentsView(
+            self.learn_arguments_view = ArgumentsView(
                 self, self.get_active_model_text()
             )

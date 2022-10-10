@@ -3,10 +3,10 @@ from abc import ABC, abstractmethod
 import tomli
 from gi.repository import Gtk
 
-from views.learn_dialog.learn_dialog_entry import LearnDialogEntry
-from views.learn_dialog.learn_dialog_combo import LearnDialogCombo
-from views.learn_dialog.learn_dialog_switch import LearnDialogSwitch
-from views.learn_dialog.learn_dialog_scale import LearnDialogScale
+from views.arguments_view.argument_entry import ArgumentEntry
+from views.arguments_view.argument_combo import ArgumentCombo
+from views.arguments_view.argument_switch import ArgumentSwitch
+from views.arguments_view.argument_scale import ArgumentScale
 
 
 class MlModel(ABC):
@@ -20,10 +20,10 @@ class MlModel(ABC):
     @staticmethod
     def parse_widget_type(widget_type):
         if widget_type == "entry":
-            return LearnDialogEntry
+            return ArgumentEntry
         elif widget_type == "combo":
-            return LearnDialogCombo
+            return ArgumentCombo
         elif widget_type == "switch":
-            return LearnDialogSwitch
+            return ArgumentSwitch
         elif widget_type == "scale":
-            return LearnDialogScale
+            return ArgumentScale

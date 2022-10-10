@@ -1,7 +1,7 @@
 from gi.repository import Gtk
 
 
-class LearnDialogCombo(Gtk.ComboBoxText):
+class ArgumentCombo(Gtk.ComboBoxText):
     def __init__(self, data_type=None, values=["None"]):
         super().__init__(halign=Gtk.Align.END, valign=Gtk.Align.CENTER)
         self.data_type = data_type
@@ -32,7 +32,6 @@ class LearnDialogCombo(Gtk.ComboBoxText):
         self.disabled_on.append(sensitives)
 
     def on_changed(self, combo):
-        #on_enabled: {sen_item: value}
         for sen_item, value in self.enabled_on:
             sen_item.set_widget_sensitive(value == self.get())
         for sen_item, value in self.disabled_on:

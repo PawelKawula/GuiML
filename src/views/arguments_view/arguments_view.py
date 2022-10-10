@@ -1,11 +1,11 @@
 from gi.repository import Gtk
 
 from learning.defined_models import learn_models
-from .learn_arguments_item import LearnArgumentsItem
+from .argument_item import ArgumentItem
 from learning.ml_model import MlModel
 
 
-class LearnArgumentsView:
+class ArgumentsView:
     def __init__(self, view, ml_model_name=None):
         self.items, self.expanders, self.vboxes = {}, [], []
         self.method_args = {}
@@ -27,20 +27,26 @@ class LearnArgumentsView:
         data_type = widget_info.get("data_type", None)
         values = widget_info.get("values", None)
         widget_type = MlModel.parse_widget_type(widget_type)
-        item = LearnArgumentsItem(name, widget_type, data_type, values)
+        item = ArgumentItem(name, widget_type, data_type, values)
         self.items[f"{method}.{item.name}"] = item
         if "default" in widget_info:
             item.set_default(widget_info["default"])
         if "enabled_on" in widget_info:
             enabled_on = widget_info["enabled_on"]
             dis_item = self.items[f"{method}.{name}"]
-            self.items[enabled_on["argument"]].add_enabled_on((dis_item, enabled_on["value"]))
+            self.items[enabled_on["argument"]].add_enabled_on(
+                (dis_item, enabled_on["value"])
+            )
         vbox.pack_start(item, True, True, 0)
         self.method_args[method][name] = item
 
     def get_arguments(self):
         return {
-            method: {name: item.get_value() for name, item in args.items() if item.get_sensitive()}
+            method: {
+                name: item.get_value()
+                for name, item in args.items()
+                if item.get_sensitive()
+            }
             for method, args in self.method_args.items()
         }
 

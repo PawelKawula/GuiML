@@ -1,10 +1,11 @@
 import xgboost as xgb
 from gi.repository import Gtk
-import tomli
+try:
+    import tomllib as tomli
+except ModuleNotFoundError:
+    import tomli
 
 from .ml_model import MlModel
-from views.learn_dialog.learn_dialog_entry import LearnDialogEntry
-from views.learn_dialog.learn_dialog_combo import LearnDialogCombo
 
 
 class GradientBoostingModel(MlModel):

@@ -3,7 +3,7 @@
 from gi.repository import Gtk
 
 
-class LearnDialogSwitch(Gtk.Switch):
+class ArgumentSwitch(Gtk.Switch):
     def __init__(self, data_type, values):
         super().__init__()
 

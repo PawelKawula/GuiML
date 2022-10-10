@@ -1,61 +1,189 @@
-[general]
-    [learning.train.max_depth]
-    widget_type = "entry"
-    data_type = "int"
-    default = 2
-    [learning.train.eta]
-    widget_type = "combo"
-    data_type = "int"
-    values = [0, 1, 2]
-    default = 1
-    [learning.train.objective]
-    widget_type = "combo"
-    data_type = "str"
-    values = [
-        "reg:squarederror", "reg:squaredlogerror", "reg:logistic", "reg:pseudohubererror",
-        "binary:logistic", "binary:logitraw", "binary:hinge",
-        "count:poisson",
-        "survival:cox", "survival:aft", "survival:aft",
-        "multi:softmax", "multi:softprob",
-        "rank:pairwise", "rank:ndcg", "rank:map",
-        "reg:gamma", "reg:tweedie",
-    ]
-    default = -1
-    [learning.train.base_score]
-    widget_type = "scale"
-    data_type = "float"
-    default = 0.5
-    [learning.train.eval_metric]
-    widget_type = "combo"
-    data_type = "str"
-    default = 0
-    values = [
-        "rmse", "rmsle",
-        "mae", "mape", "mphe",
-        "logloss",
-        "error", "error@t",
-        "merror", "mlogloss",
-        "auc", "aucpr",
-        "ndcg", "ndcg@n",
-        "map", "map@n",
-        "poisson-nloglik", "gamma-nloglik", "cox-nloglik", "tweedie-nloglik", "aft-nloglik",
-        "gamma-deviance", "interval-regression-accuracy",
-    ]
-    [learning.train.seed]
-    widget_type = "entry"
-    data_type = "int"
-    default = 0
-    [learning.train.seed_per_iteration]
-    widget_type = "switch"
-    data_type = "bool"
-    default = false
-    [learning.train.tweedie_variance_power]
-    widget_type = "scale"
-    data_type = "float"
-    values = [1, 2, 0.01]
-    enabled_on = { argument = "train.objective", value = "reg:tweedie" }
-    [learning.train.huber_slope]
-    widget_type = "entry"
-    data_type = "float"
-    default = 1.0
-    enabled_on = { argument = "train.objective", value = "reg:pseudohubererror" }
+[global.verbosity]
+widget_type = "scale"
+data_type = "int"
+values = [0, 3, 1]
+default = 2
+[global.use_rmm]
+widget_type = "switch"
+data_type = "bool"
+default = false
+
+
+[general.booster]
+widget_type = "combo"
+data_type = "str"
+values = ["gbtree", "gblinear", "dart"]
+default = 0
+[general.verbosity]
+widget_type = "scale"
+data_type = "int"
+values = [0, 3, 1]
+default = 2
+[general.validate_parameters]
+widget_type = "switch"
+default = "false"
+[general.nthread]
+widget_type = "scale"
+data_type = "int"
+values = [1, 8, 1]
+default = 1
+[general.disable_default_eval_metric]
+widget_type = "switch"
+default = false
+[general.tree_booster.eta]
+widget_type = "scale"
+data_type = "float"
+values = [0, 1, 0.01]
+default = 0.3
+[general.tree_boster.gamma]
+widget_type = "entry"
+data_type = "float"
+default = 0
+[general.tree_booster.max_depth]
+widget_type = "entry"
+data_type = "int"
+default = 6
+[general.tree_booster.min_child_weight]
+widget_type = "entry"
+data_type = "int"
+default = 1
+[general.tree_booster.subsample]
+widget_type = "scale"
+data_type = "float"
+values = [0.01, 1, 0.01]
+default = 1
+[general.tree_booster.sampling_method]
+widget_type = "combo"
+data_type = "string"
+values = ["uniform", "gradient_based"]
+default = 1
+[general.tree_booster.col_samples.bytree]
+widget_type = "scale"
+data_type = "float"
+values = [0.01, 1, 0.01]
+default = 0.5
+[general.tree_booster.col_samples.bylevel]
+widget_type = "scale"
+data_type = "float"
+values = [0.01, 1, 0.01]
+default = 0.5
+[general.tree_booster.col_samples.bynode]
+widget_type = "scale"
+data_type = "float"
+values = [0.01, 1, 0.01]
+default = 0.5
+[general.tree_boster.lambda]
+widget_type = "entry"
+data_type = "float"
+default = 1
+[general.tree_boster.alpha]
+widget_type = "entry"
+data_type = "float"
+default = 0
+[general.tree_booster.tree_method]
+widget_type = "combo"
+data_type = "str"
+values = ["auto", "exact", "approx", "hist", "gpu_hist"]
+default = 0
+[general.tree_booster.sketch_eps]
+widget_type = "entry"
+data_type = "float"
+default = 0.03
+[general.tree_booster.scale_pos_weight]
+widget_type = "entry"
+data_type = "float"
+default = 1
+[general.tree_booster.updater]
+widget_type = "entry"
+data_type = "str"
+[general.tree_booster.refresh_leaf]
+widget_type = "switch"
+default = true
+[general.tree_booster.process_type]
+widget_type = "combo"
+data_type = "str"
+values = ["default", "update"]
+default = 0
+[general.tree_booster.grow_policy]
+widget_type = "combo"
+data_type = "str"
+values = ["depthwise", "lossguide"]
+default = 0
+[general.tree_booster.max_leaves]
+widget_type = "entry"
+data_type = "int"
+default = 0
+[general.tree_booster.max_bin]
+widget_type = "entry"
+data_type = "int"
+default = 256
+[general.tree_booster.predictor]
+widget_type = "combo"
+data_type = "str"
+values = ["auto", "cpu_predictor", "gpu_predictor"]
+default = 0
+[general.tree_booster.num_parallel_tree]
+widget_type = "entry"
+data_type = "int"
+default = 1
+
+[learning.train.max_depth]
+widget_type = "entry"
+data_type = "int"
+default = 2
+[learning.train.eta]
+widget_type = "combo"
+data_type = "int"
+values = [0, 1, 2]
+default = 1
+[learning.train.objective]
+widget_type = "combo"
+data_type = "str"
+values = [
+    "reg:squarederror", "reg:squaredlogerror", "reg:logistic", "reg:pseudohubererror",
+    "binary:logistic", "binary:logitraw", "binary:hinge",
+    "count:poisson",
+    "survival:cox", "survival:aft", "survival:aft",
+    "multi:softmax", "multi:softprob",
+    "rank:pairwise", "rank:ndcg", "rank:map",
+    "reg:gamma", "reg:tweedie",
+]
+default = -1
+[learning.train.base_score]
+widget_type = "scale"
+data_type = "float"
+default = 0.5
+[learning.train.eval_metric]
+widget_type = "combo"
+data_type = "str"
+default = 0
+values = [
+    "rmse", "rmsle",
+    "mae", "mape", "mphe",
+    "logloss",
+    "error", "error@t",
+    "merror", "mlogloss",
+    "auc", "aucpr",
+    "ndcg", "ndcg@n",
+    "map", "map@n",
+    "poisson-nloglik", "gamma-nloglik", "cox-nloglik", "tweedie-nloglik", "aft-nloglik",
+    "gamma-deviance", "interval-regression-accuracy",
+]
+[learning.train.seed]
+widget_type = "entry"
+data_type = "int"
+default = 0
+[learning.train.seed_per_iteration]
+widget_type = "switch"
+data_type = "bool"
+default = false
+[learning.train.tweedie_variance_power]
+widget_type = "scale"
+data_type = "float"
+values = [1, 2, 0.01]
+enabled_on = { argument = "train.objective", value = "reg:tweedie" }
+[learning.train.huber_slope]
+widget_type = "entry"
+data_type = "float"
+default = 1.0
+enabled_on = { argument = "train.objective", value = "reg:pseudohubererror" }
