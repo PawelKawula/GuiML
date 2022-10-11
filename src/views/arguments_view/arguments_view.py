@@ -5,22 +5,39 @@ from .argument_item import ArgumentItem
 from learning.ml_model import MlModel
 
 
-class ArgumentsView:
-    def __init__(self, view, ml_model_name=None):
+class ArgumentsView(Gtk.VBox):
+    def __init__(self, view, ml_model_name, parse_options=["learning"]):
+        super().__init__()
         self.items, self.expanders, self.vboxes = {}, [], []
         self.method_args = {}
         self.view = view
-        learn_arguments = learn_models[ml_model_name].parse_options("learning")
-        self.ml_model_name = ml_model_name
-        for method, arguments in learn_arguments.items():
-            expander, vbox = Gtk.Expander(label=method), Gtk.VBox()
-            self.method_args[method] = {}
-            for name, widget_info in arguments.items():
+        for option in parse_options:
+            print(option)
+            arguments = learn_models[ml_model_name].parse_options(option)
+            for method, arguments in arguments.items():
+                view, expand = self, True
+                if len(parse_options) != 1:
+                    view = Gtk.Frame()
+                    self.add(view)
+                    expand = False
+                self.add_sublists(method, arguments, view, 0, expand)
+
+
+    def add_sublists(self, method, arguments, view, margin, expand=False):
+        expander, vbox = Gtk.Expander(label=method, margin_left=margin), Gtk.VBox()
+        self.method_args[method] = {}
+        for name, widget_info in arguments.items():
+            if "widget_type" in widget_info:
                 self.add_item(vbox, method, name, widget_info)
-            self.view.get_content_area().add(expander)
-            expander.add(vbox)
-            self.expanders.append(expander)
-            self.vboxes.append(vbox)
+            else:
+                self.add_sublists(name, widget_info, vbox, margin+10)
+        # self.view.get_content_area().add(expander)
+        expander.add(vbox)
+        view.add(expander)
+        if expand:
+            expander.set_expanded(True)
+        # self.expanders.append(expander)
+        # self.vboxes.append(vbox)
 
     def add_item(self, vbox, method, name, widget_info):
         widget_type = widget_info["widget_type"]
@@ -37,6 +54,14 @@ class ArgumentsView:
             self.items[enabled_on["argument"]].add_enabled_on(
                 (dis_item, enabled_on["value"])
             )
+            dis_item.set_widget_sensitive(False)
+        if "visible_on" in widget_info:
+            visible_on = widget_info["enabled_on"]
+            dis_item = self.items[f"{method}.{name}"]
+            self.items[visible_on["argument"]].add_visible_on(
+                (dis_item, visible_on["value"])
+            )
+            dis_item.set_widget_visible(False)
         vbox.pack_start(item, True, True, 0)
         self.method_args[method][name] = item
 
@@ -50,9 +75,13 @@ class ArgumentsView:
             for method, args in self.method_args.items()
         }
 
+
+
+    """
     def destroy(self):
         for items in [self.vboxes, self.expanders]:
             for item in items:
                 item.destroy()
         for item in self.items.values():
             item.destroy()
+    """
