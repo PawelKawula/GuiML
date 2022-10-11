@@ -5,7 +5,7 @@ class SettingsController:
     def on_ok_clicked(self, button):
         print("ok clicked")
 
-    def on_cancel_clicked(self, button):
+    def on_close_clicked(self, button):
         print("cancel clicked")
         self.destroy()
 

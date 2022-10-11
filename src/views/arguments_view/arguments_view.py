@@ -22,7 +22,6 @@ class ArgumentsView(Gtk.VBox):
                     expand = False
                 self.add_sublists(method, arguments, view, 0, expand)
 
-
     def add_sublists(self, method, arguments, view, margin, expand=False):
         expander, vbox = Gtk.Expander(label=method, margin_left=margin), Gtk.VBox()
         self.method_args[method] = {}
@@ -30,7 +29,7 @@ class ArgumentsView(Gtk.VBox):
             if "widget_type" in widget_info:
                 self.add_item(vbox, method, name, widget_info)
             else:
-                self.add_sublists(name, widget_info, vbox, margin+10)
+                self.add_sublists(name, widget_info, vbox, margin + 10)
         # self.view.get_content_area().add(expander)
         expander.add(vbox)
         view.add(expander)
@@ -74,8 +73,6 @@ class ArgumentsView(Gtk.VBox):
             }
             for method, args in self.method_args.items()
         }
-
-
 
     """
     def destroy(self):
