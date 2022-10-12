@@ -5,7 +5,7 @@ from gi.repository import Gtk
 
 class ArgumentSwitch(Gtk.Switch):
     def __init__(self, data_type, values):
-        super().__init__()
+        super().__init__(expand=False)
 
     def get(self):
         return self.get_active()

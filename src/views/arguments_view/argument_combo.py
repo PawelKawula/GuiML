@@ -1,3 +1,5 @@
+from collections.abc import Sequence
+
 from gi.repository import Gtk
 
 
@@ -8,7 +10,12 @@ class ArgumentCombo(Gtk.ComboBoxText):
         self.set_entry_text_column(0)
         for v in values:
             self.append_text(str(v))
-        self.enabled_on, self.disabled_on = [], []
+        self.enabled_on, self.disabled_on, self.invisible_on, self.visible_on = (
+            [],
+            [],
+            [],
+            [],
+        )
         self.connect("changed", self.on_changed)
 
     def get(self):
@@ -31,8 +38,38 @@ class ArgumentCombo(Gtk.ComboBoxText):
     def add_disabled_on(self, sensitives):
         self.disabled_on.append(sensitives)
 
+    def add_visible_on(self, sensitives):
+        self.visible_on.append(sensitives)
+
+    def add_invisible_on(self, sensitives):
+        self.invisible_on(self, sensitives)
+
     def on_changed(self, combo):
         for sen_item, value in self.enabled_on:
-            sen_item.set_widget_sensitive(value == self.get())
+            condition = (
+                self.get() in value
+                if isinstance(value, Sequence)
+                else value == self.get()
+            )
+            sen_item.set_widget_sensitive(condition)
         for sen_item, value in self.disabled_on:
-            sen_item.set_widget_sensitive(value != self.get())
+            condition = (
+                self.get() not in value
+                if isinstance(value, Sequence)
+                else value != self.get()
+            )
+            sen_item.set_widget_sensitive(condition)
+        for sen_item, value in self.visible_on:
+            condition = (
+                self.get() in value
+                if isinstance(value, Sequence)
+                else value == self.get()
+            )
+            sen_item.set_widget_visible(condition)
+        for sen_item, value in self.invisible_on:
+            condition = (
+                self.get() not in value
+                if isinstance(value, Sequence)
+                else value != self.get()
+            )
+            sen_item.set_widget_visible(condition)

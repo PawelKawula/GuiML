@@ -14,9 +14,9 @@ class ArgumentItem(Gtk.Box):
         self.label = Gtk.Label(
             label=label, halign=Gtk.Align.START, valign=Gtk.Align.CENTER
         )
-        self.pack_start(self.label, True, True, 0)
+        self.pack_start(self.label, False, False, 0)
         self.learn_widget = widget_type(data_type, values)
-        self.pack_end(self.learn_widget.get_widget(), True, True, 0)
+        self.pack_end(self.learn_widget.get_widget(), False, False, 0)
 
     def get_value(self):
         return self.learn_widget.get()
@@ -35,3 +35,9 @@ class ArgumentItem(Gtk.Box):
 
     def add_enabled_on(self, enabled_on):
         self.learn_widget.add_enabled_on(enabled_on)
+
+    def add_visible_on(self, visible_on):
+        self.learn_widget.add_visible_on(visible_on)
+
+    def set_widget_visible(self, visible):
+        self.set_visible(visible)

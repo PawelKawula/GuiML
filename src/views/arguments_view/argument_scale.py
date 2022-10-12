@@ -9,7 +9,8 @@ class ArgumentScale:
         self.data_type = data_type
 
     def get(self):
-        return self.scale.get_value()
+        value = self.scale.get_value()
+        return int(value) if self.data_type == "int" else value
 
     def get_widget(self):
         return self.scale

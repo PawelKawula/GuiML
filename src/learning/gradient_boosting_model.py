@@ -1,5 +1,6 @@
 import xgboost as xgb
 from gi.repository import Gtk
+
 try:
     import tomllib as tomli
 except ModuleNotFoundError:
@@ -27,3 +28,7 @@ class GradientBoostingModel(MlModel):
     def parse_options(option):
         with open("learning/gradient_boosting.toml", "rb") as f:
             return tomli.load(f)[option]
+
+    @staticmethod
+    def save_config(conf):
+        pass
