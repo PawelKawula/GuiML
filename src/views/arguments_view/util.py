@@ -7,6 +7,4 @@ def get_recursive_dict_item(d, keys, to_end=None):
 
 def get_recursive_dict_item_from_toml(d, keys, to_end=None):
     keys = keys.split(".")
-    print(d)
-    print(keys)
     return get_recursive_dict_item(d, keys, to_end)

@@ -155,16 +155,36 @@ invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
 widget_type = "switch"
 default = false
 enabled_on = { argument = "general.parameters.tree_method", value = ["hist", "gpu_hist", "approx"] }
-
-[learning.train.max_depth]
-widget_type = "entry"
-data_type = "int"
-default = 2
-[learning.train.eta]
+[general.parameters.dart.sample_type]
 widget_type = "combo"
-data_type = "int"
-values = [0, 1, 2]
-default = 1
+data_type = "str"
+values = [ "uniform", "weighted" ]
+default = 0
+enabled_on = { argument = "general.parameters.booster", value = "dart" }
+[general.parameters.dart.normalize_type]
+widget_type = "combo"
+data_type = "str"
+values = [ "tree", "forest" ]
+default = 0
+enabled_on = { argument = "general.parameters.booster", value = "dart" }
+[general.parameters.dart.rate_drop]
+widget_type = "scale"
+data_type = "float"
+values = [0, 1, 0.01]
+default = 0
+enabled_on = { argument = "general.parameters.booster", value = "dart" }
+[general.parameters.dart.one_drop]
+widget_type = "switch"
+default = false
+enabled_on = { argument = "general.parameters.booster", value = "dart" }
+[general.parameters.dart.skip_drop]
+widget_type = "scale"
+data_type = "float"
+values = [0, 1, 0.01]
+default = 0
+enabled_on = { argument = "general.parameters.booster", value = "dart" }
+
+
 [learning.train.objective]
 widget_type = "combo"
 data_type = "str"

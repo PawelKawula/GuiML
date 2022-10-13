@@ -12,6 +12,7 @@ from .utils import flatten_args
 
 class GradientBoostingModel(MlModel):
     model_params = {}
+
     def __init__(self, tdf, **methods_dict):
         dtrain = xgb.DMatrix(tdf.train.xs, label=tdf.train.y)
         param = {"max_depth": 2, "eta": 1, "objective": "reg:squarederror"}
@@ -33,5 +34,7 @@ class GradientBoostingModel(MlModel):
 
     @staticmethod
     def save_config(conf):
-        GradientBoostingModel.model_params.update(flatten_args(conf["general"]["parameters"]))
+        GradientBoostingModel.model_params.update(
+            flatten_args(conf["general"]["parameters"])
+        )
         xgb.set_config(**conf["general"]["global"])

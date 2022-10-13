@@ -58,18 +58,30 @@ class ArgumentsView(Gtk.VBox):
                 self.items, enabled_on["argument"]
             ).add_enabled_on((item, enabled_on["value"]))
             item.set_widget_sensitive(False)
+        if "disabled_on" in widget_info:
+            disabled_on = widget_info["disabled_on"]
+            get_recursive_dict_item_from_toml(
+                self.items, disabled_on["argument"]
+            ).add_disabled_on((item, enabled_on["value"]))
+            item.set_widget_sensitive(False)
         if "visible_on" in widget_info:
             visible_on = widget_info["visible_on"]
             get_recursive_dict_item_from_toml(
                 self.items, visible_on["argument"]
             ).add_visible_on((item, visible_on["value"]))
             item.set_widget_visible(False)
+        if "invisible_on" in widget_info:
+            invisible_on = widget_info["invisible_on"]
+            get_recursive_dict_item_from_toml(
+                self.items, invisible_on["argument"]
+            ).add_invisible_on((item, invisible_on["value"]))
+            item.set_widget_visible(False)
 
     def get_arguments(self, items=None):
         items = self.items if items is None else items
         args = {}
         for level, item in items.items():
-            if isinstance(item, dict):
+            if isinstance(item, dict) and len(item) != 0:
                 args.update({level: self.get_arguments(item)})
             else:
                 if item.is_visible() and item.get_widget_sensitive():
