@@ -34,7 +34,7 @@ class MainController:
         view.destroy()
         return split_kwargs
 
-    def on_destroy(self, *args):
+    def on_destroy(self, arg):
         Gtk.main_quit()
 
     def on_settings_activate(self, item):

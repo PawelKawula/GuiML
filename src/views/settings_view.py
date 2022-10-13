@@ -16,7 +16,7 @@ class SettingsView:
         self._builder.get_object("box").pack_start(self.notebook, True, True, 0)
         self.model_configs = {}
 
-        for model_name, model_class in learn_models.items():
+        for model_name in learn_models:
             page = Gtk.VBox()
             page.set_border_width(10)
             button_box = Gtk.ButtonBox(
@@ -45,5 +45,4 @@ class SettingsView:
             self.notebook.get_nth_page(self.notebook.get_current_page())
         )
         conf = self.model_configs[tab_label].get_arguments()
-        print(conf)
-        # self.model_configs[tab_label].save_config(conf)
+        learn_models[tab_label].save_config(conf)

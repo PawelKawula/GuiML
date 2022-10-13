@@ -1,8 +1,5 @@
 from abc import ABC, abstractmethod
 
-import tomli
-from gi.repository import Gtk
-
 from views.arguments_view.argument_entry import ArgumentEntry
 from views.arguments_view.argument_combo import ArgumentCombo
 from views.arguments_view.argument_switch import ArgumentSwitch
@@ -25,5 +22,4 @@ class MlModel(ABC):
             return ArgumentCombo
         elif widget_type == "switch":
             return ArgumentSwitch
-        elif widget_type == "scale":
-            return ArgumentScale
+        return ArgumentScale

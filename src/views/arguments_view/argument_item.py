@@ -2,9 +2,9 @@
 
 from gi.repository import Gtk
 
+from views.constants import MARGINS
 from .argument_entry import ArgumentEntry
 from .argument_combo import ArgumentCombo
-from views.constants import MARGINS
 
 
 class ArgumentItem(Gtk.Box):
@@ -21,7 +21,7 @@ class ArgumentItem(Gtk.Box):
     def get_value(self):
         return self.learn_widget.get()
 
-    def get_sensitive(self):
+    def get_widget_sensitive(self):
         return self.learn_widget.get_sensitive()
 
     def set_widget_sensitive(self, sensitive):
@@ -30,14 +30,17 @@ class ArgumentItem(Gtk.Box):
     def set_default(self, default):
         self.learn_widget.set_default(default)
 
-    def get_widget_sensitive(self):
-        return self.learn_widget.get_sensitive()
-
     def add_enabled_on(self, enabled_on):
         self.learn_widget.add_enabled_on(enabled_on)
 
+    def add_disabled_on(self, disabled_on):
+        self.learn_widget.add_disabled_on(disabled_on)
+
     def add_visible_on(self, visible_on):
         self.learn_widget.add_visible_on(visible_on)
+
+    def add_invisible_on(self, invisible_on):
+        self.learn_widget.add_invisible_on(invisible_on)
 
     def set_widget_visible(self, visible):
         self.set_visible(visible)

@@ -9,6 +9,7 @@ class FileChooserView(Gtk.FileChooserDialog):
             parent=parent,
             action=Gtk.FileChooserAction.OPEN,
         )
+        self.model = model
         self.add_buttons(
             Gtk.STOCK_CANCEL,
             Gtk.ResponseType.CANCEL,

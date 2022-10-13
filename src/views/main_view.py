@@ -1,8 +1,6 @@
 from gi.repository import Gtk
 
 from views import constants
-from controllers import file_handler
-from controllers.main_controller import MainController
 
 
 class MainView:

@@ -8,7 +8,6 @@ from fastai.tabular.core import (
 )
 import torch.nn.functional as F
 import pandas as pd
-import numpy as np
 from .ml_model import MlModel
 
 

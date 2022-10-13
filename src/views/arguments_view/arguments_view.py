@@ -1,9 +1,9 @@
 from gi.repository import Gtk
 
 from learning.defined_models import learn_models
+from learning.ml_model import MlModel
 from .argument_item import ArgumentItem
 from .util import get_recursive_dict_item, get_recursive_dict_item_from_toml
-from learning.ml_model import MlModel
 
 
 class ArgumentsView(Gtk.VBox):
@@ -13,13 +13,13 @@ class ArgumentsView(Gtk.VBox):
         self.view = view
         for option in parse_options:
             arguments = learn_models[ml_model_name].parse_options(option)
+            self.items[option] = {}
             for method, arguments in arguments.items():
                 view, expand = self, True
                 if len(parse_options) != 1:
                     view = Gtk.Frame()
                     self.add(view)
                     expand = False
-                self.items[option] = {}
                 self.add_sublists([option, method], arguments, view, 0, expand)
 
     def add_sublists(self, method, arguments, view, margin, expand=False):
@@ -72,5 +72,6 @@ class ArgumentsView(Gtk.VBox):
             if isinstance(item, dict):
                 args.update({level: self.get_arguments(item)})
             else:
-                args.update({level: item.get_value()})
+                if item.is_visible() and item.get_widget_sensitive():
+                    args.update({level: item.get_value()})
         return args

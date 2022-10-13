@@ -2,7 +2,6 @@ from gi.repository import Gtk
 
 from views import constants, utils
 from controllers import file_handler
-from learning.decision_tree import DecisionTreeModel
 
 
 class ResultView:

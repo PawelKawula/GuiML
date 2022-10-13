@@ -18,143 +18,143 @@ widget_type = "scale"
 data_type = "int"
 values = [0, 3, 1]
 default = 2
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
+invisible_on = { argument = "general.parameters.booster", value = "gblinear" }
 [general.parameters.validate_parameters]
 widget_type = "switch"
 default = "false"
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
+invisible_on = { argument = "general.parameters.booster", value = "gblinear" }
 [general.parameters.nthread]
 widget_type = "scale"
 data_type = "int"
 values = [1, 8, 1]
 default = 1
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
+invisible_on = { argument = "general.parameters.booster", value = "gblinear" }
 [general.parameters.disable_default_eval_metric]
 widget_type = "switch"
 default = false
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
-[general.parameters.tree_booster.eta]
+invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
+[general.parameters.booster.eta]
 widget_type = "scale"
 data_type = "float"
 values = [0, 1, 0.01]
 default = 0.3
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
-[general.parameters.tree_booster.gamma]
+invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
+[general.parameters.gamma]
 widget_type = "entry"
 data_type = "float"
 default = 0
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
-[general.parameters.tree_booster.max_depth]
+invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
+[general.parameters.max_depth]
 widget_type = "entry"
 data_type = "int"
 default = 6
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
-[general.parameters.tree_booster.min_child_weight]
+invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
+[general.parameters.min_child_weight]
 widget_type = "entry"
 data_type = "int"
 default = 1
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
-[general.parameters.tree_booster.subsample]
+invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
+[general.parameters.subsample]
 widget_type = "scale"
 data_type = "float"
 values = [0.01, 1, 0.01]
 default = 1
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
-[general.parameters.tree_booster.sampling_method]
+invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
+[general.parameters.sampling_method]
 widget_type = "combo"
 data_type = "string"
 values = ["uniform", "gradient_based"]
 default = 1
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
-[general.parameters.tree_booster.col_samples.bytree]
+invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
+[general.parameters.col_samples.colsample_bytree]
 widget_type = "scale"
 data_type = "float"
 values = [0.01, 1, 0.01]
 default = 0.5
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
-[general.parameters.tree_booster.col_samples.bylevel]
+invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
+[general.parameters.col_samples.colsample_bylevel]
 widget_type = "scale"
 data_type = "float"
 values = [0.01, 1, 0.01]
 default = 0.5
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
-[general.parameters.tree_booster.col_samples.bynode]
+invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
+[general.parameters.col_samples.colsample_bynode]
 widget_type = "scale"
 data_type = "float"
 values = [0.01, 1, 0.01]
 default = 0.5
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
-[general.parameters.tree_booster.lambda]
+invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
+[general.parameters.lambda]
 widget_type = "entry"
 data_type = "float"
 default = 1
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
-[general.parameters.tree_booster.alpha]
+invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
+[general.parameters.alpha]
 widget_type = "entry"
 data_type = "float"
 default = 0
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
-[general.parameters.tree_booster.tree_method]
+invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
+[general.parameters.tree_method]
 widget_type = "combo"
 data_type = "str"
 values = ["auto", "exact", "approx", "hist", "gpu_hist"]
 default = 0
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
-[general.parameters.tree_booster.sketch_eps]
+invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
+[general.parameters.sketch_eps]
 widget_type = "entry"
 data_type = "float"
 default = 0.03
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
-[general.parameters.tree_booster.scale_pos_weight]
+invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
+[general.parameters.scale_pos_weight]
 widget_type = "entry"
 data_type = "float"
 default = 1
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
-[general.parameters.tree_booster.updater]
-widget_type = "entry"
-data_type = "str"
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
-[general.parameters.tree_booster.refresh_leaf]
+invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
+# [general.parameters.updater]
+# widget_type = "entry"
+# data_type = "str"
+# invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
+[general.parameters.refresh_leaf]
 widget_type = "switch"
 default = true
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
-[general.parameters.tree_booster.process_type]
+invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
+[general.parameters.process_type]
 widget_type = "combo"
 data_type = "str"
 values = ["default", "update"]
 default = 0
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
-[general.parameters.tree_booster.grow_policy]
+invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
+[general.parameters.grow_policy]
 widget_type = "combo"
 data_type = "str"
 values = ["depthwise", "lossguide"]
 default = 0
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
-[general.parameters.tree_booster.max_leaves]
+invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
+[general.parameters.max_leaves]
 widget_type = "entry"
 data_type = "int"
 default = 0
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
-[general.parameters.tree_booster.max_bin]
+invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
+[general.parameters.max_bin]
 widget_type = "entry"
 data_type = "int"
 default = 256
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
-[general.parameters.tree_booster.predictor]
+invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
+[general.parameters.predictor]
 widget_type = "combo"
 data_type = "str"
 values = ["auto", "cpu_predictor", "gpu_predictor"]
 default = 0
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
-[general.parameters.tree_booster.num_parallel_tree]
+invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
+[general.parameters.num_parallel_tree]
 widget_type = "entry"
 data_type = "int"
 default = 1
-visible_on = { argument = "general.parameters.booster", value="gbtree" }
+invisible_on = { argument = "general.parameters.booster", value = "gblinear"}
 [general.parameters.single_precision_histogram]
 widget_type = "switch"
 default = false
-enabled_on = { argument = "general.parameters.tree_booster.tree_method", value = ["hist", "gpu_hist", "approx"] }
+enabled_on = { argument = "general.parameters.tree_method", value = ["hist", "gpu_hist", "approx"] }
 
 [learning.train.max_depth]
 widget_type = "entry"

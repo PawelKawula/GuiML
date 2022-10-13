@@ -5,6 +5,7 @@ class ArgumentEntry(Gtk.Entry):
     def __init__(self, data_type=None, values=None):
         super().__init__(halign=Gtk.Align.END, valign=Gtk.Align.CENTER)
         self.data_type = data_type
+        self.values = values
 
     def get(self):
         text = self.get_text()
