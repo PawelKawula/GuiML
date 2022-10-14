@@ -5,5 +5,6 @@ OUTPUT_CHOOSER_FILE = "../output_chooser.glade"
 RESULT_FILE = "../result.glade"
 LEARN_DIALOG_FILE = "../learn_dialog.glade"
 SETTINGS_FILE = "../settings.glade"
+SPLITS_FILE = "../splits.glade"
 
 MARGINS = {"margin_top": 20, "margin_bottom": 20, "margin_left": 10, "margin_right": 10}

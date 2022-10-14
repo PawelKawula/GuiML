@@ -1,18 +1,18 @@
 from gi.repository import Gtk
 
 from views import utils
-from views.split_view import SplitView
+from views.splits_view import SplitsView
 from views.learn_dialog import LearnDialog
 from views.result_view import ResultView
 from views.about_view import AboutDialog
 from views.file_chooser_view import FileChooserView
 from views.settings_view import SettingsView
 
-from models.split_model import SplitModel
+from models.splits_model import SplitsModel
 from models.file_chooser_model import FileChooserModel
 from models.settings_model import SettingsModel
 
-from controllers.split_controller import SplitController
+from controllers.splits_controller import SplitsController
 from controllers.file_chooser_controller import FileChooserController
 from controllers import file_handler
 from controllers.settings_controller import SettingsController
@@ -24,11 +24,12 @@ class MainController:
         self.file_chooser_model = FileChooserModel()
 
     def get_ins_out(self):
-        model = SplitModel(
+        model = SplitsModel(
             file_handler.get_columns_from_csv(self.file_chooser_model.filename)
         )
-        view = SplitView(self.view.window, model)
-        controller = SplitController(model, view)
+        view = SplitsView(model)
+        controller = SplitsController(model, view)
+        view.register_listener(controller)
 
         split_kwargs = controller.get_ins_out()
         view.destroy()
@@ -59,7 +60,8 @@ class MainController:
 
         self.model.split_kwargs = self.get_ins_out()
         if (
-            self.model.split_kwargs["ins"] is None
+            self.model.split_kwargs is None
+            or self.model.split_kwargs["ins"] is None
             or self.model.split_kwargs["out"] is None
         ):
             return
