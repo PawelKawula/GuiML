@@ -30,7 +30,8 @@ class GradientBoostingModel(MlModel):
     @staticmethod
     def parse_options(option):
         with open("learning/gradient_boosting.toml", "rb") as f:
-            return tomli.load(f)[option]
+            params = tomli.load(f)
+            return params[option] if option in params else {}
 
     @staticmethod
     def save_config(conf):

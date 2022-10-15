@@ -17,6 +17,8 @@ class ArgumentCombo(Gtk.ComboBoxText):
 
     def get(self):
         value = self.get_active_text()
+        if not value:
+            return None
         if self.data_type == "float":
             return float(value)
         if self.data_type == "int":

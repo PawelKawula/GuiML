@@ -20,9 +20,9 @@ class ArgumentsView(Gtk.VBox):
                     view = Gtk.Frame()
                     self.add(view)
                     expand = False
-                self.add_sublists([option, method], arguments, view, 0, expand)
+                self.__add_sublists([option, method], arguments, view, 0, expand)
 
-    def add_sublists(self, method, arguments, view, margin, expand=False):
+    def __add_sublists(self, method, arguments, view, margin, expand=False):
         expander, vbox = (
             Gtk.Expander(label=method[-1], margin_left=margin, valign=Gtk.Align.START),
             Gtk.VBox(),
@@ -30,15 +30,15 @@ class ArgumentsView(Gtk.VBox):
         get_recursive_dict_item(self.items, method, 1)[method[-1]] = {}
         for name, widget_info in arguments.items():
             if "widget_type" in widget_info:
-                self.add_item(vbox, method + [name], name, widget_info)
+                self.__add_item(vbox, method + [name], name, widget_info)
             else:
-                self.add_sublists(method + [name], widget_info, vbox, margin + 10)
+                self.__add_sublists(method + [name], widget_info, vbox, margin + 10)
         expander.add(vbox)
         view.add(expander)
         if expand:
             expander.set_expanded(True)
 
-    def add_item(self, vbox, method, name, widget_info):
+    def __add_item(self, vbox, method, name, widget_info):
         widget_type = widget_info["widget_type"]
         data_type = widget_info.get("data_type", None)
         values = widget_info.get("values", None)
@@ -46,10 +46,14 @@ class ArgumentsView(Gtk.VBox):
         item = ArgumentItem(name, widget_type, data_type, values)
         dict_item = get_recursive_dict_item(self.items, method, 1)
         dict_item[method[-1]] = item
-        self.set_item_attribs(item, widget_info)
+        self.__set_item_attribs(item, widget_info)
         vbox.pack_start(item, True, True, 0)
 
-    def set_item_attribs(self, item, widget_info):
+    def __set_item_attribs(self, item, widget_info):
+        if "can_none" in widget_info:
+            print("can_none")
+            if widget_info["can_none"]:
+                item.add_none_tickbox()
         if "default" in widget_info:
             item.set_default(widget_info["default"])
         if "enabled_on" in widget_info:
@@ -81,8 +85,11 @@ class ArgumentsView(Gtk.VBox):
         items = self.items if items is None else items
         args = {}
         for level, item in items.items():
-            if isinstance(item, dict) and len(item) != 0:
-                args.update({level: self.get_arguments(item)})
+            if isinstance(item, dict):
+                if len(item) != 0:
+                    args.update({level: self.get_arguments(item)})
+                else:
+                    continue
             else:
                 if item.is_visible() and item.get_widget_sensitive():
                     args.update({level: item.get_value()})

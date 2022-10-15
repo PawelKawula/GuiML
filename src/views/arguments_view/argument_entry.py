@@ -8,12 +8,12 @@ class ArgumentEntry(Gtk.Entry):
         self.values = values
 
     def get(self):
-        text = self.get_text()
+        value = self.get_text().lower()
         if self.data_type == "int":
-            return int(text)
+            return int(value)
         if self.data_type == "float":
-            return float(text)
-        return text
+            return float(value) if value.find(".") != -1 else int(value)
+        return value
 
     def get_widget(self):
         return self

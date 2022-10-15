@@ -52,3 +52,4 @@ class LearnDialog(Gtk.Dialog):
             self.learn_arguments_view = ArgumentsView(
                 self, self.get_active_model_text()
             )
+            self.get_content_area().add(self.learn_arguments_view)

@@ -10,12 +10,6 @@ def view_trees(builder, items_store, ins, out, **split_kwargs):
     for col in items_view.get_columns():
         items_view.remove_column(col)
 
-    """
-    output_view = builder.get_object("output_view")
-    output_view.set_model(output_store)
-    for col in output_view.get_columns():
-        output_view.remove_column(col)
-    """
     renderer = Gtk.CellRendererText()
     columns = deepcopy(ins)
     columns.append(f"{out} (Out)")
@@ -28,6 +22,6 @@ def is_none_in_dict(obj):
         return True
     if isinstance(obj, dict):
         for v in obj.values():
-            if is_none_in_dict(v):
+            if is_none_in_dict(v) and not v.get("can_none", False):
                 return True
     return False
