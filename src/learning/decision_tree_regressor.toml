@@ -25,11 +25,12 @@ default = 1
 widget_type = "entry"
 data_type = "float"
 default = 0.0
-# TODO: add support for mixed data_types:
-# [general.init.max_features]
-# widget_type = "entry"
-# data_type = "mixed"
-# default = 0.0
+[general.init.max_features]
+widget_type = "entry"
+data_type = "mixed"
+values = [ "auto", "sqrt", "log2" ]
+default = 0.0
+can_none = true
 [general.init.random_state]
 widget_type = "entry"
 data_type = "int"

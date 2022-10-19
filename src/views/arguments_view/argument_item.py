@@ -9,12 +9,25 @@ class ArgumentItem(Gtk.Box):
     def __init__(self, label, widget_type, data_type, values):
         super().__init__(**MARGINS)
         self.name = label
+        self.values = values
         self.label = Gtk.Label(
             label=label, halign=Gtk.Align.START, valign=Gtk.Align.CENTER
         )
         self.pack_start(self.label, False, False, 0)
+        # self.attach(self.label, 0, 0, 1, 1)
+        self.type_widget = None
         self.learn_widget = widget_type(data_type, values)
-        self.pack_end(self.learn_widget.get_widget(), False, False, 0)
+        self.argument_grid = Gtk.Grid(halign=Gtk.Align.END)
+        self.pack_end(self.argument_grid, True, True, 0)
+        if data_type == "mixed":
+            self.type_widget = Gtk.ComboBoxText()
+            self.type_widget.set_entry_text_column(0)
+            for t in ["str", "float", "int"]:
+                self.type_widget.append_text(t)
+            self.type_widget.connect("changed", self.on_type_widget_changed)
+            self.argument_grid.attach(self.type_widget, 1, 0, 3, 1)
+        # self.pack_end(self.learn_widget.get_widget(), False, False, 0)
+        self.argument_grid.attach(self.learn_widget.get_widget(), 4, 0, 9, 1)
         self.can_none_check_button = None
 
     def get_value(self):
@@ -51,6 +64,17 @@ class ArgumentItem(Gtk.Box):
         self.set_visible(visible)
 
     def add_none_tickbox(self):
-        print("ADDED")
         self.can_none_check_button = Gtk.CheckButton()
-        self.pack_end(self.can_none_check_button, False, False, 0)
+        self.argument_grid.attach(self.can_none_check_button, 0, 0, 1, 1)
+
+    def on_type_widget_changed(self, item):
+        print("changed")
+        choosen_type = self.type_widget.get_active_text()
+        self.learn_widget.destroy()
+        if choosen_type == "str":
+            print("str")
+            self.learn_widget = ArgumentCombo("str", self.values)
+        else:
+            self.learn_widget = ArgumentEntry(choosen_type)
+        self.argument_grid.attach(self.learn_widget.get_widget(), 4, 0, 9, 1)
+        self.argument_grid.show_all()

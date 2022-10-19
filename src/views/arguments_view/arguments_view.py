@@ -51,7 +51,6 @@ class ArgumentsView(Gtk.VBox):
 
     def __set_item_attribs(self, item, widget_info):
         if "can_none" in widget_info:
-            print("can_none")
             if widget_info["can_none"]:
                 item.add_none_tickbox()
         if "default" in widget_info:
