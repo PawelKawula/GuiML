@@ -1,0 +1,60 @@
+[general.init.criterion]
+widget_type = "combo"
+data_type = "str"
+values = [ "gini", "entropy"]
+default = 0
+[general.init.splitter]
+widget_type = "combo"
+data_type = "str"
+values = [ "best", "random" ]
+default = 0
+[general.init.max_depth]
+widget_type = "entry"
+data_type = "int"
+default = "None"
+can_none = true
+[general.init.min_samples_split]
+widget_type = "entry"
+data_type = "float"
+default = 2
+[general.init.min_samples_leaf]
+widget_type = "entry"
+data_type = "float"
+default = 1
+[general.init.min_weight_fraction_leaf]
+widget_type = "entry"
+data_type = "float"
+default = 0.0
+[general.init.max_features]
+widget_type = "entry"
+data_type = "mixed"
+values = [ "auto", "sqrt", "log2" ]
+default = 0.0
+can_none = true
+[general.init.random_state]
+widget_type = "entry"
+data_type = "int"
+default = "none"
+can_none = true
+[general.init.max_leaf_nodes]
+widget_type = "entry"
+data_type = "int"
+default = "none"
+can_none = true
+[general.init.min_impurity_decrease]
+widget_type = "entry"
+data_type = "float"
+default = 0.0
+[general.init.min_impurity_split]
+widget_type = "entry"
+data_type = "float"
+default = 0.0
+# [general.init.class_weight]
+# widget_type = "multi"
+# data_type = "int"
+# default = "None"
+# can_none = True
+[general.init.ccp_alpha]
+widget_type = "entry"
+data_type = "float"
+default = 0.0

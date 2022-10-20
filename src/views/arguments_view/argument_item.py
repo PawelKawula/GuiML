@@ -14,11 +14,11 @@ class ArgumentItem(Gtk.Box):
             label=label, halign=Gtk.Align.START, valign=Gtk.Align.CENTER
         )
         self.pack_start(self.label, False, False, 0)
-        # self.attach(self.label, 0, 0, 1, 1)
         self.type_widget = None
         self.learn_widget = widget_type(data_type, values)
         self.argument_grid = Gtk.Grid(halign=Gtk.Align.END)
         self.pack_end(self.argument_grid, True, True, 0)
+        self.data_type = data_type
         if data_type == "mixed":
             self.type_widget = Gtk.ComboBoxText()
             self.type_widget.set_entry_text_column(0)
@@ -26,7 +26,6 @@ class ArgumentItem(Gtk.Box):
                 self.type_widget.append_text(t)
             self.type_widget.connect("changed", self.on_type_widget_changed)
             self.argument_grid.attach(self.type_widget, 1, 0, 3, 1)
-        # self.pack_end(self.learn_widget.get_widget(), False, False, 0)
         self.argument_grid.attach(self.learn_widget.get_widget(), 4, 0, 9, 1)
         self.can_none_check_button = None
 
@@ -45,8 +44,17 @@ class ArgumentItem(Gtk.Box):
         self.learn_widget.set_sensitive(sensitive)
 
     def set_default(self, default):
-        if not self.can_none_check_button or str(default).lower() != "none":
+        if self.data_type == "mixed":
+            if isinstance(default, str):
+                self.type_widget.set_active(0)
+            if isinstance(default, float):
+                self.type_widget.set_active(1)
+            if isinstance(default, int):
+                self.type_widget.set_active(2)
+        if str(default).lower() != "none":
             self.learn_widget.set_default(default)
+        elif self.can_none_check_button:
+            self.can_none_check_button.set_active(True)
 
     def add_enabled_on(self, enabled_on):
         self.learn_widget.add_enabled_on(enabled_on)
@@ -65,14 +73,19 @@ class ArgumentItem(Gtk.Box):
 
     def add_none_tickbox(self):
         self.can_none_check_button = Gtk.CheckButton()
+        self.can_none_check_button.connect("toggled", self.on_can_none_tickbox_toggled)
         self.argument_grid.attach(self.can_none_check_button, 0, 0, 1, 1)
 
+    def on_can_none_tickbox_toggled(self, item):
+        sensitive = not self.can_none_check_button.get_active()
+        self.learn_widget.set_sensitive(sensitive)
+        if self.type_widget:
+            self.type_widget.set_sensitive(sensitive)
+
     def on_type_widget_changed(self, item):
-        print("changed")
         choosen_type = self.type_widget.get_active_text()
         self.learn_widget.destroy()
         if choosen_type == "str":
-            print("str")
             self.learn_widget = ArgumentCombo("str", self.values)
         else:
             self.learn_widget = ArgumentEntry(choosen_type)

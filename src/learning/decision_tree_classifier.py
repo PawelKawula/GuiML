@@ -1,15 +1,15 @@
-from sklearn.tree import DecisionTreeRegressor
+from sklearn.tree import DecisionTreeClassifier
 
 from .decision_tree_abstract import DecisionTreeAbstractModel
 from .ml_model import MlModel
 
 
-class DecisionTreeRegressorModel(DecisionTreeAbstractModel):
+class DecisionTreeClassifierModel(DecisionTreeAbstractModel):
     model_params = {}
 
     def __init__(self, tdf, **parameters_dict):
         super().__init__(tdf, **parameters_dict)
-        self.model = DecisionTreeRegressor(**self.init)
+        self.model = DecisionTreeClassifier(**self.init)
         self.model.fit(self.tdf.train.xs, self.tdf.train.y, **self.fit)
 
     def predict(self, xs):
@@ -21,7 +21,7 @@ class DecisionTreeRegressorModel(DecisionTreeAbstractModel):
 
     @staticmethod
     def save_config(conf):
-        DecisionTreeRegressorModel.model_params.update(conf["general"])
+        DecisionTreeClassifierModel.model_params.update(conf["general"])
 
 
 if __name__ == "__main__":
@@ -43,5 +43,5 @@ if __name__ == "__main__":
     procs = [Categorify, FillMissing]
     tdf = TabularPandas(df, procs, cat, cont, y_names=dep_var, splits=splits)
 
-    dlm = DecisionTreeRegressorModel(tdf)
+    dlm = DecisionTreeClassifierModel(tdf)
     print(dlm.predict(tdf.valid.xs))
