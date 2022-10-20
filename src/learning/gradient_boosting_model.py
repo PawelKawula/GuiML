@@ -1,11 +1,6 @@
 import xgboost as xgb
 from gi.repository import Gtk
 
-try:
-    import tomllib as tomli
-except ModuleNotFoundError:
-    import tomli
-
 from .ml_model import MlModel
 from .utils import flatten_args
 
@@ -20,8 +15,6 @@ class GradientBoostingModel(MlModel):
         param.update(methods_dict["learning"]["train"])
         num_round = param["num_round"] if "num_round" in param else 2
         self.model = xgb.train(param, dtrain, num_round)
-        # for method, kwargs in methods_dict.items():
-        #     getattr(self.model, method)(**kwargs)
 
     def predict(self, xs):
         xs = xgb.DMatrix(xs)
@@ -29,9 +22,7 @@ class GradientBoostingModel(MlModel):
 
     @staticmethod
     def parse_options(option):
-        with open("learning/gradient_boosting.toml", "rb") as f:
-            params = tomli.load(f)
-            return params[option] if option in params else {}
+        return MlModel.parse_options("learning/gradient_boosting.toml", option)
 
     @staticmethod
     def save_config(conf):
