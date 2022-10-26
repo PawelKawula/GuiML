@@ -56,4 +56,3 @@ if __name__ == "__main__":
     view = SplitsView(model)
     controller = SplitsController(model, view)
     view.register_listener(controller)
-    print(controller.get_ins_out())

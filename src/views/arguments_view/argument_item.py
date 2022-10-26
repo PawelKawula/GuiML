@@ -6,8 +6,10 @@ from .argument_combo import ArgumentCombo
 
 
 class ArgumentItem(Gtk.Box):
-    def __init__(self, label, widget_type, data_type, values):
+    def __init__(self, label, widget_type, data_type, values, parent=None, method=None):
         super().__init__(**MARGINS)
+        self.parent = parent
+        self.method = method
         self.name = label
         self.values = values
         self.label = Gtk.Label(
@@ -15,7 +17,7 @@ class ArgumentItem(Gtk.Box):
         )
         self.pack_start(self.label, False, False, 0)
         self.type_widget = None
-        self.learn_widget = widget_type(data_type, values)
+        self.learn_widget = widget_type(self if parent else None, data_type, values)
         self.argument_grid = Gtk.Grid(halign=Gtk.Align.END)
         self.pack_end(self.argument_grid, True, True, 0)
         self.data_type = data_type
@@ -57,6 +59,9 @@ class ArgumentItem(Gtk.Box):
         elif self.can_none_check_button:
             self.can_none_check_button.set_active(True)
 
+    def get_default(self):
+        return self.learn_widget.get_default()
+
     def add_enabled_on(self, enabled_on):
         self.learn_widget.add_enabled_on(enabled_on)
 
@@ -83,12 +88,23 @@ class ArgumentItem(Gtk.Box):
         if self.type_widget:
             self.type_widget.set_sensitive(sensitive)
 
+    # TODO: on_value_changed for mixed type
     def on_type_widget_changed(self, item):
         choosen_type = self.type_widget.get_active_text()
         self.learn_widget.destroy()
+        parent = self if self.parent else None
         if choosen_type == "str":
-            self.learn_widget = ArgumentCombo("str", self.values)
+            self.learn_widget = ArgumentCombo(parent, "str", self.values)
         else:
-            self.learn_widget = ArgumentEntry(choosen_type)
+            self.learn_widget = ArgumentEntry(parent, choosen_type)
         self.argument_grid.attach(self.learn_widget.get_widget(), 4, 0, 9, 1)
+        self.on_value_changed(self.get_value())
         self.argument_grid.show_all()
+
+    def on_value_changed(self, value):
+        label = f"* {self.name}" if self.get_default() != value else self.name
+        self.label.set_label(label)
+        self.parent.on_value_changed(self.method, value)
+
+    def get_default(self):
+        return self.learn_widget.default

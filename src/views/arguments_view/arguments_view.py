@@ -1,15 +1,23 @@
 from gi.repository import Gtk
-
 from learning.defined_models import learn_models
 from learning.ml_model import MlModel
-from .argument_item import ArgumentItem
-from .util import get_recursive_dict_item, get_recursive_dict_item_from_toml
+from views.arguments_view.argument_item import ArgumentItem
+from views.arguments_view import util
 
 
 class ArgumentsView(Gtk.VBox):
-    def __init__(self, view, ml_model_name, parse_options=["learning"]):
+    def __init__(
+        self,
+        view,
+        ml_model_name,
+        parse_options=["learning"],
+        saveable=False,
+        parent=None,
+    ):
         super().__init__()
-        self.items = {}
+        self.parent = parent
+        self.saveable = saveable
+        self.changed_values, self.items = {}, {}
         self.view = view
         for option in parse_options:
             arguments = learn_models[ml_model_name].parse_options(option)
@@ -27,7 +35,7 @@ class ArgumentsView(Gtk.VBox):
             Gtk.Expander(label=method[-1], margin_left=margin, valign=Gtk.Align.START),
             Gtk.VBox(),
         )
-        get_recursive_dict_item(self.items, method, 1)[method[-1]] = {}
+        util.get_recursive_dict_item(self.items, method, 1)[method[-1]] = {}
         for name, widget_info in arguments.items():
             if "widget_type" in widget_info:
                 self.__add_item(vbox, method + [name], name, widget_info)
@@ -43,8 +51,10 @@ class ArgumentsView(Gtk.VBox):
         data_type = widget_info.get("data_type", None)
         values = widget_info.get("values", None)
         widget_type = MlModel.parse_widget_type(widget_type)
-        item = ArgumentItem(name, widget_type, data_type, values)
-        dict_item = get_recursive_dict_item(self.items, method, 1)
+        parent = self if self.saveable else None
+        method_param = method if self.saveable else None
+        item = ArgumentItem(name, widget_type, data_type, values, parent, method_param)
+        dict_item = util.get_recursive_dict_item(self.items, method, 1)
         dict_item[method[-1]] = item
         self.__set_item_attribs(item, widget_info)
         vbox.pack_start(item, True, True, 0)
@@ -57,25 +67,25 @@ class ArgumentsView(Gtk.VBox):
             item.set_default(widget_info["default"])
         if "enabled_on" in widget_info:
             enabled_on = widget_info["enabled_on"]
-            get_recursive_dict_item_from_toml(
+            util.get_recursive_dict_item_from_toml(
                 self.items, enabled_on["argument"]
             ).add_enabled_on((item, enabled_on["value"]))
             item.set_widget_sensitive(False)
         if "disabled_on" in widget_info:
             disabled_on = widget_info["disabled_on"]
-            get_recursive_dict_item_from_toml(
+            util.get_recursive_dict_item_from_toml(
                 self.items, disabled_on["argument"]
             ).add_disabled_on((item, enabled_on["value"]))
             item.set_widget_sensitive(False)
         if "visible_on" in widget_info:
             visible_on = widget_info["visible_on"]
-            get_recursive_dict_item_from_toml(
+            util.get_recursive_dict_item_from_toml(
                 self.items, visible_on["argument"]
             ).add_visible_on((item, visible_on["value"]))
             item.set_widget_visible(False)
         if "invisible_on" in widget_info:
             invisible_on = widget_info["invisible_on"]
-            get_recursive_dict_item_from_toml(
+            util.get_recursive_dict_item_from_toml(
                 self.items, invisible_on["argument"]
             ).add_invisible_on((item, invisible_on["value"]))
             item.set_widget_visible(False)
@@ -93,3 +103,15 @@ class ArgumentsView(Gtk.VBox):
                 if item.is_visible() and item.get_widget_sensitive():
                     args.update({level: item.get_value()})
         return args
+
+    def on_value_changed(self, method, value):
+        item = util.get_recursive_dict_item(self.items, method)
+        if not item.get_visible():
+            return
+        if item.get_default() == value:
+            util.delete_recursive_dict(self.changed_values, method)
+            if util.check_empty_dict(self.changed_values):
+                self.changed_values.clear()
+        else:
+            util.set_recursive_dict_item(self.changed_values, method, value)
+        self.parent.set_edited(bool(len(self.changed_values)))

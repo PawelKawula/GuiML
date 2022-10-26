@@ -22,11 +22,11 @@ class SettingsView:
 
         for model_name in model.learn_models:
             model = SettingsTabModel(model_name)
-            view = SettingsTabView(self.dialog, model)
+            view = SettingsTabView(self.dialog, model, model_name)
             controller = SettingsTabController(self, model, view)
             view.register_listener(controller)
             self.model_configs[model_name] = view
-            self.notebook.append_page(view, Gtk.Label(label=model_name))
+            self.notebook.append_page(view, view.get_title_label())
         self.notebook.show_all()
 
     def register_listener(self, controller):

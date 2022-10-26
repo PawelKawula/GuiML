@@ -12,6 +12,7 @@ default = false
 [general.parameters.booster]
 widget_type = "combo"
 data_type = "str"
+default = 0
 values = ["gbtree", "gblinear", "dart"]
 [general.parameters.verbosity]
 widget_type = "scale"
@@ -21,7 +22,7 @@ default = 2
 invisible_on = { argument = "general.parameters.booster", value = "gblinear" }
 [general.parameters.validate_parameters]
 widget_type = "switch"
-default = "false"
+default = false
 invisible_on = { argument = "general.parameters.booster", value = "gblinear" }
 [general.parameters.nthread]
 widget_type = "scale"
