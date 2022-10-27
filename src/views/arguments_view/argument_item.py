@@ -50,6 +50,7 @@ class ArgumentItem(Gtk.Box):
         if self.data_type == "mixed":
             if isinstance(default, str):
                 self.type_widget.set_active(0)
+                self.default = self.values[default]
             if isinstance(default, float):
                 self.type_widget.set_active(1)
             if isinstance(default, int):
@@ -60,6 +61,8 @@ class ArgumentItem(Gtk.Box):
             self.can_none_check_button.set_active(True)
 
     def get_default(self):
+        if self.data_type == "mixed":
+            return self.default
         return self.learn_widget.get_default()
 
     def add_enabled_on(self, enabled_on):
@@ -95,8 +98,14 @@ class ArgumentItem(Gtk.Box):
         parent = self if self.parent else None
         if choosen_type == "str":
             self.learn_widget = ArgumentCombo(parent, "str", self.values)
+            if isinstance(self.default, str):
+                self.learn_widget.set_default(self.default)
         else:
             self.learn_widget = ArgumentEntry(parent, choosen_type)
+            if choosen_type == "float" and isinstance(self.default, float):
+                self.learn_widget.set_default(self.default)
+            if choosen_type == "int" and isinstance(self.default, int):
+                self.learn_widget.set_default(self.default)
         self.argument_grid.attach(self.learn_widget.get_widget(), 4, 0, 9, 1)
         self.on_value_changed(self.get_value())
         self.argument_grid.show_all()
@@ -107,4 +116,9 @@ class ArgumentItem(Gtk.Box):
         self.parent.on_value_changed(self.method, value)
 
     def get_default(self):
+        if self.data_type == "mixed":
+            return self.default
         return self.learn_widget.default
+
+    def set_saved(self):
+        self.label.set_label(self.name)

@@ -1,4 +1,6 @@
 from gi.repository import Gtk
+import flatdict
+
 from learning.defined_models import learn_models
 from learning.ml_model import MlModel
 from views.arguments_view.argument_item import ArgumentItem
@@ -115,3 +117,8 @@ class ArgumentsView(Gtk.VBox):
         else:
             util.set_recursive_dict_item(self.changed_values, method, value)
         self.parent.set_edited(bool(len(self.changed_values)))
+
+    def save(self):
+        self.changed_values.clear()
+        for item in flatdict.FlatDict(self.items).values():
+            item.set_saved()

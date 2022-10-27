@@ -37,3 +37,7 @@ class SettingsTabView(Gtk.Box):
 
     def get_title_label(self):
         return self.title_label
+
+    def save(self):
+        self.title_label.set_label(self.title)
+        self.args_view.save()

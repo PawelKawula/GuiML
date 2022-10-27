@@ -34,6 +34,7 @@ class SettingsView:
 
     def save_model_configs(self, model_name):
         conf = self.model_configs[model_name].args_view.get_arguments()
+        self.notebook.get_nth_page(self.notebook.get_current_page()).save()
         learn_models[model_name].save_config(conf)
 
     def revert_model_configs(self, model_name):
