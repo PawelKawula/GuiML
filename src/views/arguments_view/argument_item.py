@@ -17,6 +17,7 @@ class ArgumentItem(Gtk.Box):
         )
         self.pack_start(self.label, False, False, 0)
         self.type_widget = None
+        self.widget_type = widget_type
         self.learn_widget = widget_type(self if parent else None, data_type, values)
         self.argument_grid = Gtk.Grid(halign=Gtk.Align.END)
         self.pack_end(self.argument_grid, True, True, 0)
@@ -50,7 +51,6 @@ class ArgumentItem(Gtk.Box):
         if self.data_type == "mixed":
             if isinstance(default, str):
                 self.type_widget.set_active(0)
-                self.default = self.values[default]
             if isinstance(default, float):
                 self.type_widget.set_active(1)
             if isinstance(default, int):
@@ -90,6 +90,7 @@ class ArgumentItem(Gtk.Box):
         self.learn_widget.set_sensitive(sensitive)
         if self.type_widget:
             self.type_widget.set_sensitive(sensitive)
+        self.on_value_changed()
 
     # TODO: on_value_changed for mixed type
     def on_type_widget_changed(self, item):
@@ -107,18 +108,19 @@ class ArgumentItem(Gtk.Box):
             if choosen_type == "int" and isinstance(self.default, int):
                 self.learn_widget.set_default(self.default)
         self.argument_grid.attach(self.learn_widget.get_widget(), 4, 0, 9, 1)
-        self.on_value_changed(self.get_value())
-        self.argument_grid.show_all()
+        self.on_value_changed()
 
-    def on_value_changed(self, value):
+    def on_value_changed(self):
+        value = self.get_value()
         label = f"* {self.name}" if self.get_default() != value else self.name
         self.label.set_label(label)
         self.parent.on_value_changed(self.method, value)
 
     def get_default(self):
-        if self.data_type == "mixed":
-            return self.default
-        return self.learn_widget.default
+        return self.learn_widget.get_default()
 
     def set_saved(self):
         self.label.set_label(self.name)
+
+    def set_changed(self):
+        self.label.set_label(f"* {self.name}")

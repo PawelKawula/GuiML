@@ -28,7 +28,8 @@ def delete_recursive_dict(d, keys):
             d = d[key]
         else:
             return
-    del d[keys[-1]]
+    if keys[-1] in d:
+        del d[keys[-1]]
 
 
 def check_empty_dict(d):

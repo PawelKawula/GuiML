@@ -17,7 +17,7 @@ class ArgumentEntry(Gtk.Entry):
         if value == "":
             return None
         if self.data_type == "int":
-            return int(value)
+            return int(float(value))
         if self.data_type == "float":
             return float(value) if value.find(".") != -1 else int(value)
         return value
@@ -31,4 +31,7 @@ class ArgumentEntry(Gtk.Entry):
 
     def on_value_changed(self, item):
         if self.parent:
-            self.parent.on_value_changed(self.get())
+            self.parent.on_value_changed()
+
+    def get_default(self):
+        return self.default

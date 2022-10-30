@@ -35,10 +35,16 @@ class SettingsView:
     def save_model_configs(self, model_name):
         conf = self.model_configs[model_name].args_view.get_arguments()
         self.notebook.get_nth_page(self.notebook.get_current_page()).save()
-        learn_models[model_name].save_config(conf)
+        learn_models[model_name].save_current(conf)
 
     def revert_model_configs(self, model_name):
         flat_items = flatdict.FlatDict(self.model_configs[model_name].args_view.items)
-        for item in flat_items.values():
-            item.set_default(item.default)
-        self.save_model_configs(model_name)
+        flat_default = flatdict.FlatDict(learn_models[model_name].get_default())
+        flat_changed = flatdict.FlatDict(
+            self.model_configs[model_name].args_view.changed_values
+        )
+        for (key, item), value in zip(flat_items.items(), flat_default.values()):
+            item.set_default(value)
+            if key in flat_changed:
+                item.set_changed()
+        self.notebook.show_all()

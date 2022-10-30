@@ -10,3 +10,6 @@ class DecisionTreeAbstractModel(MlModel, ABC):
         self.tdf = tdf
         self.init = dict_get_recursive_arg(parameters_dict, "general", "init")
         self.fit = dict_get_recursive_arg(parameters_dict, "general", "fit")
+
+    def load_default():
+        pass

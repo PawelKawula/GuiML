@@ -34,4 +34,7 @@ class ArgumentScale:
 
     def on_value_changed(self, item):
         if self.parent:
-            self.parent.on_value_changed(self.get())
+            self.parent.on_value_changed()
+
+    def get_default(self):
+        return self.default

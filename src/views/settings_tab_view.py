@@ -21,7 +21,11 @@ class SettingsTabView(Gtk.Box):
         self.button_save = Gtk.Button.new_from_stock("gtk-save")
         button_box.add(self.button_save)
         self.args_view = ArgumentsView(
-            dialog, model.model_name, ["general"], saveable=True, parent=self
+            dialog,
+            model.model_name,
+            ["general"],
+            save_file=f"{title}.toml",
+            parent=self,
         )
         scrolled_window = Gtk.ScrolledWindow()
         scrolled_window.add(self.args_view)
