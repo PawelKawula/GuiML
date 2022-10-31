@@ -1,7 +1,7 @@
 [general.init.criterion]
 widget_type = "combo"
 data_type = "str"
-values = [ "mse", "friedman_mse", "mae" ]
+values = [ "squared_error", "friedman_mse", "mae" ]
 default = 0
 [general.init.splitter]
 widget_type = "combo"
@@ -29,7 +29,7 @@ default = 0.0
 widget_type = "entry"
 data_type = "mixed"
 values = [ "auto", "sqrt", "log2" ]
-default = 0.0
+default = "none"
 can_none = true
 [general.init.random_state]
 widget_type = "entry"
@@ -42,10 +42,6 @@ data_type = "int"
 default = "none"
 can_none = true
 [general.init.min_impurity_decrease]
-widget_type = "entry"
-data_type = "float"
-default = 0.0
-[general.init.min_impurity_split]
 widget_type = "entry"
 data_type = "float"
 default = 0.0

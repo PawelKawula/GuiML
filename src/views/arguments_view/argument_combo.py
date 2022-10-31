@@ -4,10 +4,15 @@ from gi.repository import Gtk
 
 
 class ArgumentCombo(Gtk.ComboBoxText):
-    def __init__(self, data_type=None, values=["None"]):
+    def __init__(self, parent=None, data_type=None, values=["None"]):
         super().__init__(halign=Gtk.Align.END, valign=Gtk.Align.CENTER)
+        self.default = 0
+        self.parent = parent
+        if self.parent:
+            self.connect("changed", self.on_value_changed)
         self.data_type = data_type
         self.set_entry_text_column(0)
+        self.values = values
         for v in values:
             self.append_text(str(v))
         self.invisible_on, self.visible_on = [], []
@@ -29,6 +34,13 @@ class ArgumentCombo(Gtk.ComboBoxText):
         return self
 
     def set_default(self, default):
+        if isinstance(default, str):
+            for i, e in enumerate(self.values):
+                if e == default:
+                    self.set_active(i)
+                    self.default = i
+                    return
+        self.default = default
         self.set_active(default)
 
     def add_enabled_on(self, sensitives):
@@ -72,3 +84,10 @@ class ArgumentCombo(Gtk.ComboBoxText):
                 else value != self.get()
             )
             sen_item.set_widget_visible(condition)
+
+    def on_value_changed(self, item):
+        if self.parent:
+            self.parent.on_value_changed()
+
+    def get_default(self):
+        return self.values[self.default]

@@ -5,11 +5,20 @@ from .ml_model import MlModel
 
 
 class DecisionTreeRegressorModel(DecisionTreeAbstractModel):
-    model_params = {}
+    _current_params = {}
+    _default_params = {}
 
     def __init__(self, tdf, **parameters_dict):
         super().__init__(tdf, **parameters_dict)
-        self.model = DecisionTreeRegressor(**self.init)
+        params = {}
+        params.update(DecisionTreeRegressorModel._default_params["general"]["init"])
+        params.update(
+            DecisionTreeRegressorModel._current_params["init"]
+            if "init" in DecisionTreeRegressorModel._current_params
+            else {}
+        )
+        print(self.fit)
+        self.model = DecisionTreeRegressor(**params)
         self.model.fit(self.tdf.train.xs, self.tdf.train.y, **self.fit)
 
     def predict(self, xs):
@@ -20,8 +29,14 @@ class DecisionTreeRegressorModel(DecisionTreeAbstractModel):
         return MlModel.parse_options("learning/decision_tree_regressor.toml", option)
 
     @staticmethod
-    def save_config(conf):
-        DecisionTreeRegressorModel.model_params.update(conf["general"])
+    def save_current(conf):
+        DecisionTreeRegressorModel._current_params.update(conf["general"])
+
+    @classmethod
+    def load_default(cls):
+        cls._default_params = MlModel.load_default(
+            "learning/decision_tree_regressor.toml"
+        )
 
 
 if __name__ == "__main__":
