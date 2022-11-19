@@ -6,7 +6,7 @@ from views import constants
 class SplitsView:
     def __init__(self, model):
         self.model = model
-        self._builder = Gtk.Builder()
+        self._builder = constants.GTK_BUILDER
         self._builder.add_from_file(constants.SPLITS_FILE)
 
         self.window = self._builder.get_object("dialog")

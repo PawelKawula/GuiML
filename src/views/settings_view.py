@@ -12,7 +12,7 @@ from learning.defined_models import learn_models
 class SettingsView:
     def __init__(self, model):
         self.model = model
-        self._builder = Gtk.Builder()
+        self._builder = constants.GTK_BUILDER
         self._builder.add_from_file(constants.SETTINGS_FILE)
 
         self.dialog = self._builder.get_object("dialog")

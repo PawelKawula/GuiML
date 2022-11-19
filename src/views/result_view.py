@@ -8,7 +8,7 @@ class ResultView:
     def __init__(self, parent, main_model, ml_model, **learn_kwargs):
         self.parent = parent
         self.main_model = main_model
-        self._builder = Gtk.Builder()
+        self._builder = constants.GTK_BUILDER
         self._builder.add_from_file(constants.RESULT_FILE)
         self._builder.connect_signals(self)
 
@@ -18,7 +18,7 @@ class ResultView:
 
         self.populate()
 
-    def on_ok(self, button):
+    def on_ok(self, item):
         self.dialog.destroy()
 
     def populate(self):

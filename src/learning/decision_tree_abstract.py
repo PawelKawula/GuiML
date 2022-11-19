@@ -1,4 +1,4 @@
-from abc import ABC, staticmethod
+from abc import ABC, abstractmethod
 
 
 from .ml_model import MlModel
