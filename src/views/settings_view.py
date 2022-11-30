@@ -1,36 +1,27 @@
 from gi.repository import Gtk
 import flatdict
 
-from models.settings_tab_model import SettingsTabModel
 from views import constants
+from views.template import Template
 from views.arguments_view.arguments_view import ArgumentsView
 from views.settings_tab_view import SettingsTabView
-from controllers.settings_tab_controller import SettingsTabController
+# from controllers.settings_tab_controller import SettingsTabController
 from learning.defined_models import learn_models
+from common.configs.global_ml_config import GlobalMlConfig
 
 
-class SettingsView:
-    def __init__(self, model):
-        self.model = model
-        self._builder = constants.GTK_BUILDER
-        self._builder.add_from_file(constants.SETTINGS_FILE)
-
-        self.dialog = self._builder.get_object("dialog")
-        self.notebook = Gtk.Notebook(expand=True)
-        self._builder.get_object("box").pack_start(self.notebook, True, True, 0)
+@Template(filename=constants.SETTINGS_FILE)
+class SettingsView(Gtk.Dialog):
+    __gtype_name__ = "settings_dialog"
+    def __init__(self, parent):
+        super().__init__(parent)
         self.model_configs = {}
 
-        for model_name in model.learn_models:
-            model = SettingsTabModel(model_name)
-            view = SettingsTabView(self.dialog, model, model_name)
-            controller = SettingsTabController(self, model, view)
-            view.register_listener(controller)
-            self.model_configs[model_name] = view
-            self.notebook.append_page(view, view.get_title_label())
+        for model_name in parent.get_ml_config().get_learn_models():
+            stv = SettingsTabView(self, model_name)
+            self.model_configs[model_name] = stv
+            self.notebook.append_page(stv, stv.get_title_label())
         self.notebook.show_all()
-
-    def register_listener(self, controller):
-        self._builder.connect_signals(controller)
 
     def save_model_configs(self, model_name):
         conf = self.model_configs[model_name].args_view.get_arguments()

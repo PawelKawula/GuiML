@@ -1,36 +1,31 @@
 from gi.repository import Gtk
 
 from views import constants, utils
-from controllers import file_handler
+from views.template import Template
+from common import file_handler
 
 
-class ResultView:
-    def __init__(self, parent, main_model, ml_model, **learn_kwargs):
+@Template(filename=constants.RESULT_FILE)
+class ResultView(Gtk.Dialog):
+    __gtype_name__ = "result_dialog"
+    def __init__(self, parent, ml_model, **learn_kwargs):
+        super().__init__()
         self.parent = parent
-        self.main_model = main_model
-        self._builder = constants.GTK_BUILDER
-        self._builder.add_from_file(constants.RESULT_FILE)
-        self._builder.connect_signals(self)
-
-        self.dialog = self._builder.get_object("dialog")
-        self.dialog.show()
-        self.ml_model = ml_model(self.main_model.tdf, **learn_kwargs)
-
+        self.ml_config = parent.get_ml_config()
+        self.splits_config = parent.get_splits_config()
+        self.ml_model = ml_model(self.ml_config.get_tdf(), **learn_kwargs)
         self.populate()
 
+        self.show()
+
+    @Gtk.Template.Callback()
     def on_ok(self, item):
-        self.dialog.destroy()
+        self.destroy()
 
     def populate(self):
-        split_kwargs = self.main_model.split_kwargs
+        tdf, split_kwargs = self.ml_config.get_tdf(), self.splits_config.dump_dict_copy()
         tdf = file_handler.get_values(
-            self.main_model.tdf, valid=True, ml_model=self.ml_model, **split_kwargs
+            tdf, valid=True, ml_model=self.ml_model, **split_kwargs
         )
-        store = file_handler.get_store(tdf, valid=True, **split_kwargs)
-        utils.view_trees(self._builder, store, **split_kwargs)
-
-    def run(self):
-        self.dialog.run()
-
-    def destroy(self):
-        self.dialog.destroy()
+        store = file_handler.get_store(tdf, valid=True)
+        utils.view_trees(self.items_view, store, **split_kwargs)

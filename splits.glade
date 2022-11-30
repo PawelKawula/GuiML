@@ -8,7 +8,7 @@
       <column type="gchararray"/>
     </columns>
   </object>
-  <object class="GtkDialog" id="dialog">
+  <template class="splits_dialog" parent="GtkDialog">
     <property name="can-focus">False</property>
     <property name="default-width">800</property>
     <property name="default-height">600</property>
@@ -90,7 +90,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkRadioButton" id="split_method_combo_ti">
+              <object class="GtkRadioButton" id="split_method_combo_time">
                 <property name="label" translatable="yes">Time-Based</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
@@ -222,5 +222,5 @@
       <action-widget response="-6">button1</action-widget>
       <action-widget response="-5">button2</action-widget>
     </action-widgets>
-  </object>
+  </template>
 </interface>

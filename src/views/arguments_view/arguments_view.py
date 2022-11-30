@@ -114,7 +114,7 @@ class ArgumentsView(Gtk.VBox):
             else:
                 if item.is_visible() and item.get_widget_sensitive():
                     args.update({level: item.get_value()})
-        print(args)
+        # print(args)
         return args
 
     def on_value_changed(self, method, value):

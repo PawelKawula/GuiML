@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
-  <object class="GtkDialog" id="dialog">
+  <template class="result_dialog" parent="GtkDialog">
     <property name="can-focus">False</property>
     <property name="default-width">800</property>
     <property name="default-height">600</property>
@@ -47,6 +47,9 @@
               <object class="GtkTreeView" id="items_view">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <child internal-child="selection">
+                  <object class="GtkTreeSelection"/>
+                </child>
               </object>
             </child>
           </object>
@@ -61,5 +64,5 @@
     <action-widgets>
       <action-widget response="-5">button1</action-widget>
     </action-widgets>
-  </object>
+  </template>
 </interface>

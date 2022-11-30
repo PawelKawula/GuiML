@@ -7,7 +7,7 @@
     <property name="can-focus">False</property>
     <property name="stock">gtk-properties</property>
   </object>
-  <object class="GtkWindow" id="window">
+  <template parent="GtkWindow" class="window">
     <property name="name">window</property>
     <property name="can-focus">False</property>
     <signal name="destroy" handler="on_destroy" swapped="no"/>
@@ -157,5 +157,5 @@
         </child>
       </object>
     </child>
-  </object>
+  </template>
 </interface>

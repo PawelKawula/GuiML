@@ -4,8 +4,7 @@ from copy import deepcopy
 from gi.repository import Gtk
 
 
-def view_trees(builder, items_store, ins, out, **split_kwargs):
-    items_view = builder.get_object("items_view")
+def view_trees(items_view, items_store, ins, out, **split_kwargs):
     items_view.set_model(items_store)
     for col in items_view.get_columns():
         items_view.remove_column(col)

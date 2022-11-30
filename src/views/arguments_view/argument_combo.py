@@ -40,6 +40,8 @@ class ArgumentCombo(Gtk.ComboBoxText):
                     self.set_active(i)
                     self.default = i
                     return
+            if default.lower() == "none":
+                return
         self.default = default
         self.set_active(default)
 
@@ -90,4 +92,4 @@ class ArgumentCombo(Gtk.ComboBoxText):
             self.parent.on_value_changed()
 
     def get_default(self):
-        return self.values[self.default]
+        return self.values[self.default] if not isinstance(self.default, str) else None

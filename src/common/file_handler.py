@@ -12,7 +12,7 @@ from fastai.tabular.core import (
 from models.dataset_tree_store import DatasetTreeStore
 
 
-def get_store(tdf, valid=False, **kwargs):
+def get_store(tdf, valid=False):
     columns = [str] * len(tdf.items.iloc[0])
     tree_store = DatasetTreeStore(valid, *columns)
 

@@ -3,7 +3,7 @@ from gi.repository import Gtk
 
 from .ml_model import MlModel
 from .utils import flatten_args, flatten_arg_groups
-from learning.decision_tree_regressor import DecisionTreeRegressorModel
+from .decision_tree_regressor import DecisionTreeRegressorModel
 
 
 class GradientBoostingModel(MlModel):
