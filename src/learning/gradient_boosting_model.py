@@ -15,7 +15,8 @@ class GradientBoostingModel(MlModel):
         param = {}
         groups = ["col_samples", "dart"]
         default_params = flatten_arg_groups(
-            GradientBoostingModel._default_params["general"]["parameters"], *groups
+            GradientBoostingModel._default_params["general"]["parameters"],
+            *groups
         )
         current_params = flatten_arg_groups(
             GradientBoostingModel._current_params, *groups
@@ -43,4 +44,6 @@ class GradientBoostingModel(MlModel):
 
     @classmethod
     def load_default(cls):
-        cls._default_params = MlModel.load_default("learning/gradient_boosting.toml")
+        cls._default_params = MlModel.load_default(
+            "learning/gradient_boosting.toml"
+        )

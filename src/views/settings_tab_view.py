@@ -1,9 +1,9 @@
 from gi.repository import Gtk
 
-from views import constants
 
-from views.arguments_view.arguments_view import ArgumentsView
-from views.template import Template
+from . import constants
+from .arguments_view.arguments_view import ArgumentsView
+from .template import Template
 
 
 @Template(filename=constants.SETTINGS_TAB_FILE)

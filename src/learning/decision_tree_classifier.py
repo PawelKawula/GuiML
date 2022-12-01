@@ -18,7 +18,9 @@ class DecisionTreeClassifierModel(DecisionTreeAbstractModel):
 
     @staticmethod
     def parse_options(option):
-        return MlModel.parse_options("learning/decision_tree_classifier.toml", option)
+        return MlModel.parse_options(
+            "learning/decision_tree_classifier.toml", option
+        )
 
     @staticmethod
     def save_current(conf):

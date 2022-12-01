@@ -5,8 +5,8 @@ from copy import deepcopy
 
 from common.none_val import NoneVal
 
-class DictWrapper(collections.Mapping):
 
+class DictWrapper(collections.Mapping):
     def __init__(self, data):
         self._data = data
 
@@ -19,8 +19,9 @@ class DictWrapper(collections.Mapping):
     def __iter__(self):
         return iter(self._data)
 
+
 class Config(ABC):
-    def __init__(self,  config={}):
+    def __init__(self, config={}):
         self.__config = config
 
     def set_config(self, config):

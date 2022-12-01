@@ -6,7 +6,9 @@ class ArgumentScale:
         self.default = None
         values = [0, 1, 0.01] if values is None else values
         assert len(values) == 3, "values for scale must contain 3 numbers!"
-        self.scale = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL, *values)
+        self.scale = Gtk.Scale.new_with_range(
+            Gtk.Orientation.HORIZONTAL, *values
+        )
         self.parent = parent
         if self.parent:
             self.scale.connect("value-changed", self.on_value_changed)

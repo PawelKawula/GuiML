@@ -6,7 +6,9 @@ from .argument_combo import ArgumentCombo
 
 
 class ArgumentItem(Gtk.Box):
-    def __init__(self, label, widget_type, data_type, values, parent=None, method=None):
+    def __init__(
+        self, label, widget_type, data_type, values, parent=None, method=None
+    ):
         super().__init__(**MARGINS)
         self.parent = parent
         self.method = method
@@ -18,7 +20,9 @@ class ArgumentItem(Gtk.Box):
         self.pack_start(self.label, False, False, 0)
         self.type_widget = None
         self.widget_type = widget_type
-        self.learn_widget = widget_type(self if parent else None, data_type, values)
+        self.learn_widget = widget_type(
+            self if parent else None, data_type, values
+        )
         self.argument_grid = Gtk.Grid(halign=Gtk.Align.END)
         self.pack_end(self.argument_grid, True, True, 0)
         self.data_type = data_type
@@ -82,7 +86,9 @@ class ArgumentItem(Gtk.Box):
 
     def add_none_tickbox(self):
         self.can_none_check_button = Gtk.CheckButton()
-        self.can_none_check_button.connect("toggled", self.on_can_none_tickbox_toggled)
+        self.can_none_check_button.connect(
+            "toggled", self.on_can_none_tickbox_toggled
+        )
         self.argument_grid.attach(self.can_none_check_button, 0, 0, 1, 1)
 
     def on_can_none_tickbox_toggled(self, item):

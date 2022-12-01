@@ -15,6 +15,11 @@ SETTINGS_FILE = str(PROJECT_ROOT / "settings.glade")
 SETTINGS_TAB_FILE = str(PROJECT_ROOT / "settings_tab.glade")
 SPLITS_FILE = str(PROJECT_ROOT / "splits.glade")
 
-MARGINS = {"margin_top": 20, "margin_bottom": 20, "margin_left": 10, "margin_right": 10}
+MARGINS = {
+    "margin_top": 20,
+    "margin_bottom": 20,
+    "margin_left": 10,
+    "margin_right": 10,
+}
 
 GTK_BUILDER = Gtk.Builder()

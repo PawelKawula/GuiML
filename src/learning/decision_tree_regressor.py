@@ -11,7 +11,9 @@ class DecisionTreeRegressorModel(DecisionTreeAbstractModel):
     def __init__(self, tdf, **parameters_dict):
         super().__init__(tdf, **parameters_dict)
         params = {}
-        params.update(DecisionTreeRegressorModel._default_params["general"]["init"])
+        params.update(
+            DecisionTreeRegressorModel._default_params["general"]["init"]
+        )
         params.update(
             DecisionTreeRegressorModel._current_params["init"]
             if "init" in DecisionTreeRegressorModel._current_params
@@ -26,7 +28,9 @@ class DecisionTreeRegressorModel(DecisionTreeAbstractModel):
 
     @staticmethod
     def parse_options(option):
-        return MlModel.parse_options("learning/decision_tree_regressor.toml", option)
+        return MlModel.parse_options(
+            "learning/decision_tree_regressor.toml", option
+        )
 
     @staticmethod
     def save_current(conf):

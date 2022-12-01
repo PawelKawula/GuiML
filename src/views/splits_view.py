@@ -1,7 +1,7 @@
 from gi.repository import Gtk
 
-from views import constants
-from views.template import Template
+from . import constants
+from .template import Template
 from common.configs.global_ml_config import ReadOnlyGlobalMlConfig
 from common.configs.splits_config import SplitsConfig
 from common import file_handler
@@ -10,10 +10,13 @@ from common import file_handler
 @Template(filename=constants.SPLITS_FILE)
 class SplitsView(Gtk.Dialog):
     __gtype_name__ = "splits_dialog"
+
     def __init__(self, parent):
         super().__init__(parent)
         self.ml_config = parent.get_ml_config()
-        self.columns = file_handler.get_columns_from_csv(self.ml_config.get_filename())
+        self.columns = file_handler.get_columns_from_csv(
+            self.ml_config.get_filename()
+        )
 
         for col in self.columns:
             self.output_choose_combo.append_text(col)
@@ -52,10 +55,12 @@ class SplitsView(Gtk.Dialog):
         split_kwargs["out"] = selection
         return split_kwargs
 
-
     def get_included_excluded_columns(self):
         cols = []
-        model, pathlist = self.incl_excl_tree.get_selection().get_selected_rows()
+        (
+            model,
+            pathlist,
+        ) = self.incl_excl_tree.get_selection().get_selected_rows()
         for path in pathlist:
             tree_iter = model.get_iter(path)
             value = model.get_value(tree_iter, 0)

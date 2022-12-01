@@ -24,7 +24,9 @@ def get_store(tdf, valid=False):
             tdf.valid.decode().items.astype(str).to_numpy().tolist()
         )
     else:
-        tree_store.append_results(tdf.decode().items.astype(str).to_numpy().tolist())
+        tree_store.append_results(
+            tdf.decode().items.astype(str).to_numpy().tolist()
+        )
 
     return tree_store
 

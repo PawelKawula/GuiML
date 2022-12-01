@@ -6,8 +6,8 @@ import toml
 
 from learning.defined_models import learn_models
 from learning.ml_model import MlModel
-from views.arguments_view.argument_item import ArgumentItem
-from views.arguments_view import util
+from .argument_item import ArgumentItem
+from . import util
 
 
 class ArgumentsView(Gtk.VBox):
@@ -37,11 +37,15 @@ class ArgumentsView(Gtk.VBox):
                     view = Gtk.Frame()
                     self.add(view)
                     expand = False
-                self.__add_sublists([option, method], arguments, view, 0, expand)
+                self.__add_sublists(
+                    [option, method], arguments, view, 0, expand
+                )
 
     def __add_sublists(self, method, arguments, view, margin, expand=False):
         expander, vbox = (
-            Gtk.Expander(label=method[-1], margin_left=margin, valign=Gtk.Align.START),
+            Gtk.Expander(
+                label=method[-1], margin_left=margin, valign=Gtk.Align.START
+            ),
             Gtk.VBox(),
         )
         util.get_recursive_dict_item(self.items, method, 1)[method[-1]] = {}
@@ -49,7 +53,9 @@ class ArgumentsView(Gtk.VBox):
             if "widget_type" in widget_info:
                 self.__add_item(vbox, method + [name], name, widget_info)
             else:
-                self.__add_sublists(method + [name], widget_info, vbox, margin + 10)
+                self.__add_sublists(
+                    method + [name], widget_info, vbox, margin + 10
+                )
         expander.add(vbox)
         view.add(expander)
         if expand:
@@ -62,7 +68,9 @@ class ArgumentsView(Gtk.VBox):
         widget_type = MlModel.parse_widget_type(widget_type)
         parent = self if self.save_file else None
         method_param = method if self.save_file else None
-        item = ArgumentItem(name, widget_type, data_type, values, parent, method_param)
+        item = ArgumentItem(
+            name, widget_type, data_type, values, parent, method_param
+        )
         dict_item = util.get_recursive_dict_item(self.items, method, 1)
         dict_item[method[-1]] = item
         self.__set_item_attribs(item, widget_info, method)
@@ -73,7 +81,9 @@ class ArgumentsView(Gtk.VBox):
             if widget_info["can_none"]:
                 item.add_none_tickbox()
         if util.exists_recursive_dict_item(self.saved_settings, method):
-            item.set_default(util.get_recursive_dict_item(self.saved_settings, method))
+            item.set_default(
+                util.get_recursive_dict_item(self.saved_settings, method)
+            )
         elif "default" in widget_info:
             item.set_default(widget_info["default"])
         item.set_saved()

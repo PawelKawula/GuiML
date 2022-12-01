@@ -1,9 +1,12 @@
 from gi.repository import Gtk
-from views import constants
+
+from . import constants
 
 
 class FileChooserView(Gtk.FileChooserDialog):
-    def __init__(self, parent, filters={"Csv files": "text/csv", "Any files": "*"}):
+    def __init__(
+        self, parent, filters={"Csv files": "text/csv", "Any files": "*"}
+    ):
         super().__init__(
             title="Please choose a file",
             parent=parent,
@@ -30,6 +33,5 @@ class FileChooserView(Gtk.FileChooserDialog):
         filename = None
         if response == Gtk.ResponseType.OK:
             filename = self.get_filename()
-        elif response == Gtk.ResponseType.CANCEL:
-            self.destroy()
+        self.destroy()
         return filename

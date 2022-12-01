@@ -1,6 +1,7 @@
 from gi.repository import Gtk
-from views import constants, utils
-from views.template import Template
+
+from . import constants, utils
+from .template import Template
 from .arguments_view.arguments_view import ArgumentsView
 from learning.defined_models import learn_models
 
@@ -8,23 +9,29 @@ from learning.defined_models import learn_models
 @Template(filename=constants.LEARN_DIALOG_FILE)
 class LearnDialog(Gtk.Dialog):
     __gtype_name__ = "learn_dialog"
+
     def __init__(self, parent):
-        super().__init__(parent)
+        super().__init__(transient_for=parent, flags=0)
         for l in learn_models:
             self.method_combo_box.append_text(l)
         self.method_combo_box.set_active(0)
-        self.learn_arguments_view = ArgumentsView(self, self.get_active_model_text())
-        self.get_content_area().add(self.learn_arguments_view)
+        self.learn_arguments_view = ArgumentsView(self, learn_models[0])
+        self.box.pack_start(self.learn_arguments_view, True, True, 0)
+        self.arg_views = {}
+        self.add_buttons(
+            Gtk.STOCK_CANCEL,
+            Gtk.ResponseType.CANCEL,
+            Gtk.STOCK_OK,
+            Gtk.ResponseType.OK,
+        )
         self.show_all()
 
     def get_learn_kwargs(self, **kwargs):
-        while True:
-            response = self.run()
-            if response != Gtk.ResponseType.OK:
-                return None, None
-            learn_kwargs = self.learn_arguments_view.get_arguments()
-            if not utils.is_none_in_dict(learn_kwargs):
-                break
+        response = self.run()
+        if response == Gtk.ResponseType.CANCEL:
+            self.destroy()
+            return None, None
+        learn_kwargs = self.learn_arguments_view.get_arguments()
         ml_model = self.get_active_model()
         self.destroy()
         return ml_model, learn_kwargs
@@ -42,8 +49,13 @@ class LearnDialog(Gtk.Dialog):
 
     def reset_view(self):
         if hasattr(self, "learn_arguments_view"):
-            self.learn_arguments_view.destroy()
-            self.learn_arguments_view = ArgumentsView(
-                self, self.get_active_model_text()
-            )
-            self.get_content_area().add(self.learn_arguments_view)
+            active_model_text = self.get_active_model_text()
+            self.box.remove(self.learn_arguments_view)
+            if active_model_text in self.arg_views:
+                self.learn_arguments_view = self.arg_views[active_model_text]
+            else:
+                self.learn_arguments_view = ArgumentsView(
+                    self, self.get_active_model_text()
+                )
+            self.box.pack_start(self.learn_arguments_view, True, True, 0)
+            self.resize(1, 1)
