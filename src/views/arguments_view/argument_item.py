@@ -7,15 +7,14 @@ from .argument_combo import ArgumentCombo
 
 class ArgumentItem(Gtk.Box):
     def __init__(
-        self, label, widget_type, data_type, values, parent=None, method=None
+            self, name, widget_type, data_type, values, parent=None, method=None, propagate_change_to_parent=False
     ):
         super().__init__(**MARGINS)
-        self.parent = parent
-        self.method = method
-        self.name = label
-        self.values = values
+        self.propagate_change_to_parent = propagate_change_to_parent
+        self.parent, self.method = parent, method
+        self.name, self.values = name, values
         self.label = Gtk.Label(
-            label=label, halign=Gtk.Align.START, valign=Gtk.Align.CENTER
+            label=name, halign=Gtk.Align.START, valign=Gtk.Align.CENTER
         )
         self.pack_start(self.label, False, False, 0)
         self.type_widget = None
@@ -119,6 +118,8 @@ class ArgumentItem(Gtk.Box):
     def on_value_changed(self):
         value = self.get_value()
         label = f"* {self.name}" if self.get_default() != value else self.name
+        if not self.propagate_change_to_parent:
+            return
         self.label.set_label(label)
         self.parent.on_value_changed(self.method, value)
 

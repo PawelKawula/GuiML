@@ -12,12 +12,14 @@ class ResultView(Gtk.Dialog):
     def __init__(self, parent, ml_model, **learn_kwargs):
         super().__init__()
         self.parent = parent
-        self.ml_config = parent.get_ml_config()
-        self.splits_config = parent.get_splits_config()
+        self.__initialize_configs()
         self.ml_model = ml_model(self.ml_config.get_tdf(), **learn_kwargs)
         self.populate()
-
         self.show()
+
+    def __initialize_configs(self):
+        self.ml_config = self.parent.get_ml_config()
+        self.splits_config = self.parent.get_splits_config()
 
     @Gtk.Template.Callback()
     def on_ok_clicked(self, item):
@@ -31,5 +33,5 @@ class ResultView(Gtk.Dialog):
         tdf = file_handler.get_values(
             tdf, valid=True, ml_model=self.ml_model, **split_kwargs
         )
-        store = file_handler.get_store(tdf, valid=True)
-        utils.view_trees(self.items_view, store, **split_kwargs)
+        self.store = file_handler.get_store(tdf, valid=True)
+        utils.view_trees(self.items_view, self.store, **split_kwargs)

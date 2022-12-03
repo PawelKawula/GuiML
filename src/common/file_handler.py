@@ -18,14 +18,14 @@ def get_store(tdf, valid=False):
 
     if not valid:
         tree_store.append_training(
-            tdf.train.decode().items.astype(str).to_numpy().tolist()
+            *tdf.train.decode().items.astype(str).to_numpy().tolist()
         )
         tree_store.append_validation(
-            tdf.valid.decode().items.astype(str).to_numpy().tolist()
+            *tdf.valid.decode().items.astype(str).to_numpy().tolist()
         )
     else:
         tree_store.append_results(
-            tdf.decode().items.astype(str).to_numpy().tolist()
+            *tdf.decode().items.astype(str).to_numpy().tolist()
         )
 
     return tree_store

@@ -1,7 +1,8 @@
 from views.main_view import MainView
 from gi.repository import Gtk
 
-view = MainView()
-view.show()
+if __name__ == "__main__":
+    view = MainView()
+    view.show()
 
-Gtk.main()
+    Gtk.main()

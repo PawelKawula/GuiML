@@ -2,7 +2,7 @@ from gi.repository import Gtk
 
 
 from . import constants
-from .arguments_view.arguments_view import ArgumentsView
+from .arguments_view.ml_arguments_view import MlArgumentsView
 from .template import Template
 
 
@@ -10,15 +10,15 @@ from .template import Template
 class SettingsTabView(Gtk.Box):
     __gtype_name__ = "settings_tab_box"
 
-    def __init__(self, parent, title):
+    def __init__(self, parent, title, get_saved=True):
         super().__init__(orientation=Gtk.Orientation.VERTICAL)
         self.title, self.parent = title, parent
         self.title_label = Gtk.Label(label=title)
-        self.args_view = ArgumentsView(
+        self.args_view = MlArgumentsView(
             parent,
             self.title_label.get_text(),
             ["general"],
-            save_file=f"{title}.toml",
+            save_file=f"{title}.toml" if get_saved else None,
             parent=self,
         )
         self.scrolled_window.add(self.args_view)

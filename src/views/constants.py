@@ -21,5 +21,3 @@ MARGINS = {
     "margin_left": 10,
     "margin_right": 10,
 }
-
-GTK_BUILDER = Gtk.Builder()

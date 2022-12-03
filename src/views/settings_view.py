@@ -3,7 +3,6 @@ import flatdict
 
 from views import constants
 from .template import Template
-from .arguments_view.arguments_view import ArgumentsView
 from .settings_tab_view import SettingsTabView
 
 from learning.defined_models import learn_models
@@ -14,12 +13,12 @@ from common.configs.global_ml_config import GlobalMlConfig
 class SettingsView(Gtk.Dialog):
     __gtype_name__ = "settings_dialog"
 
-    def __init__(self, parent):
+    def __init__(self, parent, get_saved=False):
         super().__init__(parent)
         self.model_configs = {}
 
         for model_name in parent.get_ml_config().get_learn_models():
-            stv = SettingsTabView(self, model_name)
+            stv = SettingsTabView(self, model_name, get_saved=get_saved)
             self.model_configs[model_name] = stv
             self.notebook.append_page(stv, stv.get_title_label())
         self.notebook.show_all()

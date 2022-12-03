@@ -12,17 +12,17 @@ class DatasetTreeStore(Gtk.TreeStore):
             self.training_iter = self.get_iter(Gtk.TreePath([0]))
             self.validation_iter = self.get_iter(Gtk.TreePath([1]))
 
-    def append_training(self, values):
+    def append_training(self, *values):
         assert not self.valid
         for row in values:
             super().append(self.training_iter, row)
 
-    def append_validation(self, values):
+    def append_validation(self, *values):
         assert not self.valid
         for row in values:
             super().append(self.validation_iter, row)
 
-    def append_results(self, values):
+    def append_results(self, *values):
         assert self.valid
         for row in values:
             super().append(None, row)

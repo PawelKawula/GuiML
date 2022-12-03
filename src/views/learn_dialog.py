@@ -2,7 +2,7 @@ from gi.repository import Gtk
 
 from . import constants, utils
 from .template import Template
-from .arguments_view.arguments_view import ArgumentsView
+from .arguments_view.ml_arguments_view import MlArgumentsView
 from learning.defined_models import learn_models
 
 
@@ -15,7 +15,7 @@ class LearnDialog(Gtk.Dialog):
         for l in learn_models:
             self.method_combo_box.append_text(l)
         self.method_combo_box.set_active(0)
-        self.learn_arguments_view = ArgumentsView(self, learn_models[0])
+        self.learn_arguments_view = MlArgumentsView(self, self.get_active_model_text())
         self.box.pack_start(self.learn_arguments_view, True, True, 0)
         self.arg_views = {}
         self.add_buttons(
@@ -31,6 +31,8 @@ class LearnDialog(Gtk.Dialog):
         if response == Gtk.ResponseType.CANCEL:
             self.destroy()
             return None, None
+        print("response", response)
+        print(response, int(Gtk.ResponseType.OK), int(Gtk.ResponseType.CANCEL))
         learn_kwargs = self.learn_arguments_view.get_arguments()
         ml_model = self.get_active_model()
         self.destroy()
@@ -50,6 +52,7 @@ class LearnDialog(Gtk.Dialog):
     def reset_view(self):
         if hasattr(self, "learn_arguments_view"):
             active_model_text = self.get_active_model_text()
+            # self.learn_arguments_view.destroy()
             self.box.remove(self.learn_arguments_view)
             if active_model_text in self.arg_views:
                 self.learn_arguments_view = self.arg_views[active_model_text]
