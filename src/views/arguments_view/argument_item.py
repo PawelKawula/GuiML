@@ -7,7 +7,14 @@ from .argument_combo import ArgumentCombo
 
 class ArgumentItem(Gtk.Box):
     def __init__(
-            self, name, widget_type, data_type, values, parent=None, method=None, propagate_change_to_parent=False
+        self,
+        name,
+        widget_type,
+        data_type,
+        values,
+        parent=None,
+        method=None,
+        propagate_change_to_parent=False,
     ):
         super().__init__(**MARGINS)
         self.propagate_change_to_parent = propagate_change_to_parent

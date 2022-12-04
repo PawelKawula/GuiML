@@ -21,13 +21,17 @@ class MlArgumentsView(Gtk.VBox):
     ):
         super().__init__()
         self.parent, self.save_file, self.view = parent, save_file, view
-        self.ml_model_name, self.options_to_parse = ml_model_name, options_to_parse
+        self.ml_model_name, self.options_to_parse = (
+            ml_model_name,
+            options_to_parse,
+        )
         self.changed_values, self.items = {}, {}
         self.saved_settings = self.__load_save_file(save_file)
         for option in self.options_to_parse:
-            widget_dict_for_cat = learn_models[ml_model_name].parse_options(option)
+            widget_dict_for_cat = learn_models[ml_model_name].parse_options(
+                option
+            )
             self.__create_item_widgets_for_cat(widget_dict_for_cat, option)
-
 
     def __decorate_widget_group_in_frame(self, view):
         view = Gtk.Frame()
@@ -35,9 +39,13 @@ class MlArgumentsView(Gtk.VBox):
 
     def __create_item_widgets_for_cat(self, widget_dict_for_cat, option):
         self.items[option] = {}
-        self.__parse_group_or_leaf_widgets_from_dict(widget_dict_for_cat, option)
+        self.__parse_group_or_leaf_widgets_from_dict(
+            widget_dict_for_cat, option
+        )
 
-    def __parse_group_or_leaf_widgets_from_dict(self, widget_dict_for_cat, option):
+    def __parse_group_or_leaf_widgets_from_dict(
+        self, widget_dict_for_cat, option
+    ):
         for method, arguments in widget_dict_for_cat.items():
             view, expand = self, True
             if len(self.options_to_parse) != 1:
@@ -46,7 +54,6 @@ class MlArgumentsView(Gtk.VBox):
             self.__add_widget_group(
                 [option, method], arguments, view, 0, expand
             )
-
 
     def __load_save_file(self, save_file):
         if save_file and os.path.exists(save_file):

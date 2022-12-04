@@ -21,8 +21,8 @@ class DictWrapper(collections.Mapping):
 
 
 class Config(ABC):
-    def __init__(self, config={}):
-        self.__config = config
+    def __init__(self, config=None):
+        self.__config = {} if config is None else config
 
     def set_config(self, config):
         self.__config = config
@@ -46,7 +46,7 @@ class Config(ABC):
 
 
 class ReadOnlyConfig(ABC):
-    def __init__(self, config):
+    def __init__(self, config=None):
         self.__config = config
 
     def is_none(self):

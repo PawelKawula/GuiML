@@ -4,8 +4,12 @@ from copy import deepcopy
 from gi.repository import Gtk
 
 
-def view_trees(items_view, items_store, ins, out, **split_kwargs):
+def view_trees(
+    items_view, items_store, ins, out, expanded=False, **split_kwargs
+):
     items_view.set_model(items_store)
+    if expanded:
+        items_view.expand_all()
     for col in items_view.get_columns():
         items_view.remove_column(col)
 

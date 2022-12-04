@@ -44,6 +44,7 @@ class DecisionTreeRegressorModel(DecisionTreeAbstractModel):
 
 
 if __name__ == "__main__":
+    from sklearn.tree import DecisionTreeRegressor
     import pandas as pd
     from fastai.tabular.core import (
         TabularPandas,
@@ -61,6 +62,8 @@ if __name__ == "__main__":
     cont, cat = cont_cat_split(df, 1, dep_var=dep_var)
     procs = [Categorify, FillMissing]
     tdf = TabularPandas(df, procs, cat, cont, y_names=dep_var, splits=splits)
+    model = DecisionTreeRegressor()
+    print(type(tdf.train.xs))
 
-    dlm = DecisionTreeRegressorModel(tdf)
-    print(dlm.predict(tdf.valid.xs))
+    # dlm = DecisionTreeRegressorModel(tdf)
+    # print(dlm.predict(tdf.valid.xs))

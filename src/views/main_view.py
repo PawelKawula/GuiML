@@ -1,6 +1,7 @@
 from copy import deepcopy
 
 from gi.repository import Gtk
+import pandas as pd
 
 from . import constants, utils
 from .template import Template
@@ -62,10 +63,15 @@ class MainView(Gtk.Window):
         self.__set_ins_out(filename)
         if not self.__is_splits_config_correct():
             return
+        cols = self.ro_splits_config.get_ins() + [
+            self.ro_splits_config.get_out()
+        ]
+        df = pd.read_csv(filename)[cols]
+        self.ml_config.set_df(df)
 
         self.ml_config.set_tdf(
             file_handler.get_tabular_pandas(
-                **self.ro_splits_config.dump_dict_copy()
+                df.copy(), **self.ro_splits_config.dump_dict_copy()
             )
         )
         store = self.__get_store(**self.ro_splits_config.dump_dict_copy())

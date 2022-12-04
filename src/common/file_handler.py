@@ -15,24 +15,25 @@ from models.dataset_tree_store import DatasetTreeStore
 def get_store(tdf, valid=False):
     columns = [str] * len(tdf.items.iloc[0])
     tree_store = DatasetTreeStore(valid, *columns)
+    tdf_copy = tdf.copy()
 
     if not valid:
         tree_store.append_training(
-            *tdf.train.decode().items.astype(str).to_numpy().tolist()
+            *tdf_copy.train.decode().items.astype(str).to_numpy().tolist()
         )
         tree_store.append_validation(
-            *tdf.valid.decode().items.astype(str).to_numpy().tolist()
+            *tdf_copy.valid.decode().items.astype(str).to_numpy().tolist()
         )
     else:
         tree_store.append_results(
-            *tdf.decode().items.astype(str).to_numpy().tolist()
+            *tdf_copy.decode().items.astype(str).to_numpy().tolist()
         )
 
     return tree_store
 
 
-def get_values(df, valid=False, **split_kwargs):
-    new_df = df.valid.copy() if valid else df.copy()
+def get_values(tdf, valid=False, **split_kwargs):
+    new_df = tdf.valid.copy() if valid else tdf.copy()
     if "ml_model" in split_kwargs:
         new_df.items[split_kwargs["out"]] = split_kwargs["ml_model"].predict(
             new_df.train.xs
@@ -40,8 +41,7 @@ def get_values(df, valid=False, **split_kwargs):
     return new_df
 
 
-def get_tabular_pandas(filename, ins, out, pct=75, model=None, **kwargs):
-    df = pd.read_csv(filename)
+def get_tabular_pandas(df, out, pct=75, model=None, **kwargs):
     df = sort_data(df, **kwargs) if model else df
     split = round(pct / 100 * len(df))
     splits = list(range(split)), list(range(split, len(df)))

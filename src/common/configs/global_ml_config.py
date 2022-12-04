@@ -8,8 +8,17 @@ class GlobalMlConfig(Config):
     def set_filename(self, filename):
         self._set_value("filename", filename)
 
+    def set_df(self, df):
+        self._set_value("df", df)
+
     def set_tdf(self, tdf):
         self._set_value("tdf", tdf)
+
+    def get_tdf(self):
+        return self._get_value("tdf")
+
+    def get_df(self):
+        return self._get_value("df")
 
 
 class ReadOnlyGlobalMlConfig(ReadOnlyConfig):
@@ -18,6 +27,23 @@ class ReadOnlyGlobalMlConfig(ReadOnlyConfig):
 
     def get_tdf(self):
         return self._get_value("tdf")
+
+    def get_df(self):
+        return self._get_value("df")
+
+    def is_column_categorical(self, column):
+        return column in self.get_tdf().cat_names
+
+    def get_column_categories(self, column):
+        df = self.get_df()
+        if not self.is_column_categorical(column):
+            return ["None"]
+        ret = list(df[column].value_counts().index)
+        print(column, "categories:", ret)
+        return ret
+
+    def get_item_from_tdf(self, y, col):
+        return self.get_df().loc[y, col]
 
     def get_learn_models(self):
         return learn_models

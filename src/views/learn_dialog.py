@@ -11,11 +11,13 @@ class LearnDialog(Gtk.Dialog):
     __gtype_name__ = "learn_dialog"
 
     def __init__(self, parent):
-        super().__init__(transient_for=parent, flags=0)
+        super().__init__(parent=parent, transient_for=parent, flags=0)
         for l in learn_models:
             self.method_combo_box.append_text(l)
         self.method_combo_box.set_active(0)
-        self.learn_arguments_view = MlArgumentsView(self, self.get_active_model_text())
+        self.learn_arguments_view = MlArgumentsView(
+            self, self.get_active_model_text()
+        )
         self.box.pack_start(self.learn_arguments_view, True, True, 0)
         self.arg_views = {}
         self.add_buttons(
@@ -24,15 +26,13 @@ class LearnDialog(Gtk.Dialog):
             Gtk.STOCK_OK,
             Gtk.ResponseType.OK,
         )
-        self.show_all()
+        # self.show_all()
 
     def get_learn_kwargs(self, **kwargs):
         response = self.run()
-        if response == Gtk.ResponseType.CANCEL:
+        if response != int(Gtk.ResponseType.OK):
             self.destroy()
             return None, None
-        print("response", response)
-        print(response, int(Gtk.ResponseType.OK), int(Gtk.ResponseType.CANCEL))
         learn_kwargs = self.learn_arguments_view.get_arguments()
         ml_model = self.get_active_model()
         self.destroy()

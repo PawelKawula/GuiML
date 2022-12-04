@@ -21,7 +21,7 @@ class ReadOnlySplitsConfig(ReadOnlyConfig):
     def get_validation_split_method(self):
         return self._get_value("validation_split_method")
 
-    def get_pct(self, pct):
+    def get_pct(self):
         return self._get_value("pct")
 
     def get_ins(self):

@@ -31,7 +31,7 @@ class SplitsView(Gtk.Dialog):
 
     def get_ins_out(self):
         response = self.run()
-        if response == Gtk.ResponseType.CANCEL:
+        if response != int(Gtk.ResponseType.OK):
             return None
         split_kwargs = {}
         split_kwargs["validation_split_method"] = next(

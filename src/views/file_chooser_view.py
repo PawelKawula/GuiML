@@ -31,7 +31,7 @@ class FileChooserView(Gtk.FileChooserDialog):
     def get_csv(self):
         response = self.run()
         filename = None
-        if response == Gtk.ResponseType.OK:
+        if response == int(Gtk.ResponseType.OK):
             filename = self.get_filename()
         self.destroy()
         return filename
