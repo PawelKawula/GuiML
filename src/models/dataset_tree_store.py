@@ -29,12 +29,12 @@ class DatasetTreeStore(Gtk.TreeStore):
 
     def append_results(self, *values):
         assert self.valid
-        for row in values[::100]:
+        for row in values:
             print(row)
             super().append(self.test_iter, [str(v) for v in row])
 
     def append_added(self, *values):
         assert self.valid
-        for row in values[::100]:
+        for row in values:
             print(row)
             super().append(self.added_iter, [str(v) for v in row])
