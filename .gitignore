@@ -138,4 +138,6 @@ dmypy.json
 *~
 notes.txt
 todo.txt
-**/.xns
+**/*.xns
+src/**/
+src/test
