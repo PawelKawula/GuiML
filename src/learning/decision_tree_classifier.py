@@ -19,7 +19,7 @@ class DecisionTreeClassifierModel(DecisionTreeAbstractModel):
     @staticmethod
     def parse_options(option):
         return MlModel.parse_options(
-            "learning/decision_tree_classifier.toml", option
+            "decision_tree_classifier.toml", option
         )
 
     @staticmethod
@@ -30,7 +30,7 @@ class DecisionTreeClassifierModel(DecisionTreeAbstractModel):
     @classmethod
     def load_default(cls):
         cls.default_params = MlModel.load_default(
-            "learning/decision_tree_classifier.toml"
+            "decision_tree_classifier.toml"
         )
 
 

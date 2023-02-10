@@ -53,6 +53,7 @@ class SplitsView(Gtk.Dialog):
             else [col for col in in_columns if col in selected_cols]
         )
         split_kwargs["out"] = selection
+        split_kwargs["render"] = self.render_checkbox.get_active()
         return split_kwargs
 
     def get_included_excluded_columns(self):

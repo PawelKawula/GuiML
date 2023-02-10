@@ -41,13 +41,15 @@ class ArgumentItem(Gtk.Box):
             self.argument_grid.attach(self.type_widget, 1, 0, 3, 1)
         self.argument_grid.attach(self.learn_widget.get_widget(), 4, 0, 9, 1)
         self.can_none_check_button = None
+        self.nan_value = None
 
     def get_value(self):
+        print(f"get {self.name} of type {self.data_type}")
         return (
             self.learn_widget.get()
             if not self.can_none_check_button
             or not self.can_none_check_button.get_active()
-            else None
+            else self.nan_value
         )
 
     def get_widget_sensitive(self):
@@ -90,7 +92,8 @@ class ArgumentItem(Gtk.Box):
     def set_widget_visible(self, visible):
         self.set_visible(visible)
 
-    def add_none_tickbox(self):
+    def add_none_tickbox(self, nan_value=None):
+        self.nan_value = nan_value
         self.can_none_check_button = Gtk.CheckButton()
         self.can_none_check_button.connect(
             "toggled", self.on_can_none_tickbox_toggled

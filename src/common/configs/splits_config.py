@@ -16,6 +16,9 @@ class SplitsConfig(Config):
     def set_out(self, out):
         self._set_value("out", out)
 
+    def set_render(self, render):
+        self._set_value("render", render)
+
 
 class ReadOnlySplitsConfig(ReadOnlyConfig):
     def get_validation_split_method(self):
@@ -27,5 +30,11 @@ class ReadOnlySplitsConfig(ReadOnlyConfig):
     def get_ins(self):
         return self._get_value("ins")
 
+    def get_ins(self):
+        return self._get_value("ins")
+
     def get_out(self):
         return self._get_value("out")
+
+    def get_render(self):
+        return self._get_value("render")

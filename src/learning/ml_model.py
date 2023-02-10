@@ -5,6 +5,7 @@ try:
 except ModuleNotFoundError:
     import tomli
 
+from views import constants
 from views.arguments_view.argument_entry import ArgumentEntry
 from views.arguments_view.argument_combo import ArgumentCombo
 from views.arguments_view.argument_switch import ArgumentSwitch
@@ -21,7 +22,7 @@ class MlModel(ABC):
 
     @staticmethod
     def parse_options(fname, option):
-        with open(fname, "rb") as f:
+        with open(constants.SRC_PATH/"learning"/fname, "rb") as f:
             conf = tomli.load(f)
             return conf[option] if option in conf else {}
 
@@ -63,7 +64,7 @@ class MlModel(ABC):
 
     @classmethod
     def load_default(cls, conf_file):
-        with open(conf_file, "rb") as f:
+        with open(constants.SRC_PATH/"learning"/conf_file, "rb") as f:
             conf = MlModel.__load_dict_default(tomli.load(f))
         return conf.copy()
 

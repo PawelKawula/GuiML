@@ -42,8 +42,14 @@ class ReadOnlyGlobalMlConfig(ReadOnlyConfig):
         print(column, "categories:", ret)
         return ret
 
+    def get_xs_column_to_type_dict(self):
+        tdf = self.get_tdf()[~self.get_tdf().items.isnull().any(axis=1)]
+        res = {c: type(v) for c, v in tdf.iloc[0].items()}
+        print(res)
+        return res
+
     def get_item_from_tdf(self, y, col):
-        return self.get_df().loc[y, col]
+        return self.get_tdf().decode().loc[y, col]
 
     def get_learn_models(self):
         return learn_models

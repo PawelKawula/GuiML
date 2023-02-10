@@ -18,6 +18,7 @@ from common.configs.global_ml_config import (
 )
 from common.configs.splits_config import SplitsConfig, ReadOnlySplitsConfig
 from common.none_val import NoneVal
+from models.dataset_tree_store import DatasetTreeStore
 
 
 @Template(filename=constants.GLADE_FILE)
@@ -30,6 +31,7 @@ class MainView(Gtk.Window):
         self.ro_splits_config = ReadOnlySplitsConfig(self.splits_config)
         self.ml_config = GlobalMlConfig()
         self.ro_ml_config = ReadOnlyGlobalMlConfig(self.ml_config)
+        self.store = Gtk.TreeStore()
 
     def __set_ins_out(self, filename):
         splits = SplitsView(self)
@@ -74,9 +76,13 @@ class MainView(Gtk.Window):
                 df.copy(), **self.ro_splits_config.dump_dict_copy()
             )
         )
-        store = self.__get_store(**self.ro_splits_config.dump_dict_copy())
+        if self.ro_splits_config.get_render():
+            self.store = self.__get_store(**self.ro_splits_config.dump_dict_copy())
+        else:
+            self.store.clear()
+
         utils.view_trees(
-            self.items_view, store, **self.ro_splits_config.dump_dict_copy()
+            self.items_view, self.store, **self.ro_splits_config.dump_dict_copy()
         )
 
     def __is_splits_config_correct(self):

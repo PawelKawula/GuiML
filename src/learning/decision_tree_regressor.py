@@ -29,7 +29,7 @@ class DecisionTreeRegressorModel(DecisionTreeAbstractModel):
     @staticmethod
     def parse_options(option):
         return MlModel.parse_options(
-            "learning/decision_tree_regressor.toml", option
+            "decision_tree_regressor.toml", option
         )
 
     @staticmethod
@@ -39,7 +39,7 @@ class DecisionTreeRegressorModel(DecisionTreeAbstractModel):
     @classmethod
     def load_default(cls):
         cls._default_params = MlModel.load_default(
-            "learning/decision_tree_regressor.toml"
+            "decision_tree_regressor.toml"
         )
 
 

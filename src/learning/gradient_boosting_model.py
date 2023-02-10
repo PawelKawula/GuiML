@@ -33,7 +33,7 @@ class GradientBoostingModel(MlModel):
 
     @staticmethod
     def parse_options(option):
-        return MlModel.parse_options("learning/gradient_boosting.toml", option)
+        return MlModel.parse_options("gradient_boosting.toml", option)
 
     @staticmethod
     def save_current(conf):
@@ -45,5 +45,5 @@ class GradientBoostingModel(MlModel):
     @classmethod
     def load_default(cls):
         cls._default_params = MlModel.load_default(
-            "learning/gradient_boosting.toml"
+            "gradient_boosting.toml"
         )
